@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DermAtlas — AI Destekli Cilt Bakım &amp; INCI Rehberi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #FAF9F6; color: #1E293B; }
+    h1, h2, .font-serif-editorial { font-family: 'Fraunces', Georgia, serif; }
+    .font-mono-inci { font-family: 'IBM Plex Mono', monospace; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Üst Gezinme Çubuğu -->
+  <header class="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-6">
+      <button onclick="switchTab('explore')" class="font-serif-editorial text-2xl font-semibold text-slate-900 whitespace-nowrap">
+        DermAtlas
+      </button>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600" id="desktop-nav">
+        <button data-tab="explore" onclick="switchTab('explore')" class="nav-btn py-1 border-b-2 border-[#2D5A43] text-[#2D5A43] font-semibold">Keşfet</button>
+        <button data-tab="reviews" onclick="switchTab('reviews')" class="nav-btn py-1 border-b-2 border-transparent hover:text-slate-900">Yorumlar</button>
+        <button data-tab="scanner" onclick="switchTab('scanner')" class="nav-btn py-1 border-b-2 border-transparent hover:text-slate-900">Tarayıcı</button>
+        <button data-tab="compare" onclick="switchTab('compare')" class="nav-btn py-1 border-b-2 border-transparent hover:text-slate-900">Karşılaştır</button>
+        <button data-tab="profile" onclick="switchTab('profile')" class="nav-btn py-1 border-b-2 border-transparent hover:text-slate-900">Profilim</button>
+      </nav>
+
+      <button onclick="switchTab('scanner')" class="px-4 py-2 text-xs font-semibold text-white bg-[#2D5A43] rounded-lg hover:bg-[#224734] whitespace-nowrap">
+        Barkod Tara
+      </button>
+    </div>
+    <!-- Mobil Alt Sekme Çubuğu -->
+    <div class="md:hidden flex items-center justify-around border-t border-slate-200 bg-white py-2 text-xs font-medium text-slate-600">
+      <button onclick="switchTab('explore')">Keşfet</button>
+      <button onclick="switchTab('reviews')">Yorumlar</button>
+      <button onclick="switchTab('scanner')">Tarayıcı</button>
+      <button onclick="switchTab('compare')">Karşılaştır</button>
+      <button onclick="switchTab('profile')">Profilim</button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-10">
+
+    <!-- 1. KEŞFET (EXPLORE) -->
+    <section id="tab-explore" class="tab-view space-y-8">
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 sm:p-10 space-y-5">
+        <p class="text-xs font-medium text-[#2D5A43]">Open Beauty Facts Açık Veri &amp; INCI Analiz Platformu</p>
+        <h1 class="text-3xl sm:text-4xl font-semibold text-slate-900">Cilt bakım ürünlerini içerik bilimiyle keşfedin.</h1>
+        <form onsubmit="handleExploreSearch(event)" class="flex flex-col sm:flex-row gap-3 max-w-2xl">
+          <input id="explore-search-input" type="text" placeholder="Ürün adı, marka veya barkod ara (ör. CeraVe, 3337875597388)" class="flex-1 px-4 py-3 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm focus:outline-none focus:border-[#2D5A43]" />
+          <button type="submit" class="px-6 py-3 rounded-xl bg-[#2D5A43] text-white text-sm font-semibold hover:bg-[#224734]">API'de Ara</button>
+        </form>
+        <div id="explore-notice" class="hidden text-xs text-[#2D5A43] bg-[#F3F7F4] border border-[#DCE7E0] rounded-xl px-4 py-2.5"></div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2" id="explore-filters">
+        <button onclick="setSkinFilter('Tümü')" class="skin-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-[#2D5A43] text-white">Tümü</button>
+        <button onclick="setSkinFilter('Kuru')" class="skin-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white border border-slate-200 text-slate-700">Kuru</button>
+        <button onclick="setSkinFilter('Yağlı')" class="skin-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white border border-slate-200 text-slate-700">Yağlı</button>
+        <button onclick="setSkinFilter('Karma')" class="skin-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white border border-slate-200 text-slate-700">Karma</button>
+        <button onclick="setSkinFilter('Hassas')" class="skin-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white border border-slate-200 text-slate-700">Hassas</button>
+      </div>
+
+      <div id="explore-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- 2. YORUMLAR & TOPLULUK (REVIEWS) -->
+    <section id="tab-reviews" class="tab-view hidden space-y-8">
+      <div class="border-b border-slate-200 pb-4">
+        <h1 class="text-3xl font-semibold text-slate-900">Yorumlar &amp; Topluluk Akışı</h1>
+        <p class="text-sm text-slate-600 mt-1">Ürün deneyimlerinizi cilt tipinizle birlikte paylaşın.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <form onsubmit="handleAddReview(event)" class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+          <h2 class="text-lg font-semibold">Deneyim Paylaş</h2>
+          <select id="rev-product" class="w-full px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm"></select>
+          <div class="grid grid-cols-2 gap-3">
+            <input id="rev-author" type="text" placeholder="Adınız" class="px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm" />
+            <select id="rev-skin" class="px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm">
+              <option value="Kuru">Kuru</option>
+              <option value="Yağlı">Yağlı</option>
+              <option value="Karma" selected>Karma</option>
+              <option value="Hassas">Hassas</option>
+            </select>
+          </div>
+          <select id="rev-rating" class="w-full px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm">
+            <option value="5">5 Yıldız — Çok Memnunum</option>
+            <option value="4">4 Yıldız — İyi</option>
+            <option value="3">3 Yıldız — Ortalama</option>
+            <option value="2">2 Yıldız — Zayıf</option>
+            <option value="1">1 Yıldız — Uygun Değil</option>
+          </select>
+          <input id="rev-title" type="text" required placeholder="Yorum başlığı" class="w-full px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm" />
+          <textarea id="rev-comment" rows="3" required placeholder="Ürün hakkındaki deneyiminiz..." class="w-full px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm"></textarea>
+          <button type="submit" class="w-full py-3 rounded-xl bg-[#2D5A43] text-white text-sm font-semibold hover:bg-[#224734]">Yorumu Yayınla</button>
+        </form>
+        <div id="reviews-list" class="lg:col-span-7 space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- 3. ÜRÜN TARAMA & FOTOĞRAF YÜKLEME (SCANNER) -->
+    <section id="tab-scanner" class="tab-view hidden space-y-8">
+      <div class="border-b border-slate-200 pb-4">
+        <h1 class="text-3xl font-semibold text-slate-900">Ürün Tarama &amp; Fotoğraf Yükleme</h1>
+        <p class="text-sm text-slate-600 mt-1">Fotoğraf yükleyin veya barkod girerek Open Beauty Facts API'den canlı içerik analizi alın.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Sürükle Bırak Fotoğraf Alanı -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+          <h2 class="text-lg font-semibold">Ürün / Etiket Fotoğrafı</h2>
+          <div id="dropzone" onclick="document.getElementById('photo-input').click()" class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-[#FAF9F6] cursor-pointer hover:border-[#2D5A43]">
+            <input id="photo-input" type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoUpload(this.files[0])" />
+            <p class="text-sm font-semibold text-slate-800">Fotoğrafı buraya sürükleyin veya seçin</p>
+            <p class="text-xs text-slate-500 mt-1">Desteklenen tarayıcılarda barkod otomatik okunur</p>
+            <img id="photo-preview" class="hidden mx-auto mt-4 max-h-48 rounded-lg border border-slate-200" alt="Yüklenen etiket" />
+          </div>
+          <p id="photo-status" class="text-xs text-slate-600"></p>
+        </div>
+
+        <!-- Manuel Barkod Sorgu Alanı -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+          <h2 class="text-lg font-semibold">Manuel Barkod Girişi (Open Beauty Facts API)</h2>
+          <form onsubmit="handleBarcodeSubmit(event)" class="flex gap-2">
+            <input id="barcode-input" type="text" inputmode="numeric" placeholder="Örn: 3337875597388" class="flex-1 px-4 py-3 rounded-xl bg-[#FAF9F6] border border-slate-200 font-mono-inci text-sm" />
+            <button type="submit" class="px-5 py-3 rounded-xl bg-[#2D5A43] text-white text-sm font-semibold hover:bg-[#224734]">Sorgula</button>
+          </form>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button type="button" onclick="triggerSampleBarcode('3337875597388')" class="px-3 py-1.5 rounded-lg bg-[#FAF9F6] border border-slate-200">La Roche-Posay · 3337875597388</button>
+            <button type="button" onclick="triggerSampleBarcode('3401360205918')" class="px-3 py-1.5 rounded-lg bg-[#FAF9F6] border border-slate-200">Bioderma · 3401360205918</button>
+            <button type="button" onclick="triggerSampleBarcode('3600523956050')" class="px-3 py-1.5 rounded-lg bg-[#FAF9F6] border border-slate-200">L'Oréal · 3600523956050</button>
+          </div>
+          <div id="scanner-status" class="text-xs text-[#2D5A43]"></div>
+        </div>
+      </div>
+      <div id="scanner-result" class="hidden bg-white rounded-2xl border border-slate-200 p-6 sm:p-8"></div>
+    </section>
+
+    <!-- 4. ÜRÜN KARŞILAŞTIRMA (COMPARE) -->
+    <section id="tab-compare" class="tab-view hidden space-y-8">
+      <div class="border-b border-slate-200 pb-4">
+        <h1 class="text-3xl font-semibold text-slate-900">Ürün Karşılaştırma &amp; Çakışma Analizi</h1>
+        <p class="text-sm text-slate-600 mt-1">İki ürün arasındaki Sabah/Akşam dağılımını, cilt tipi uyumunu ve kimyasal çakışmaları inceleyin.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
+          <label class="text-xs font-semibold text-[#2D5A43]">1. Ürün (Slot A)</label>
+          <select id="compare-a" onchange="renderComparison()" class="w-full px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm"></select>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
+          <label class="text-xs font-semibold text-[#2D5A43]">2. Ürün (Slot B)</label>
+          <select id="compare-b" onchange="renderComparison()" class="w-full px-3 py-2.5 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm"></select>
+        </div>
+      </div>
+      <div id="compare-report" class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-6"></div>
+    </section>
+
+    <!-- 5. KİŞİSEL KULLANICI PROFİLİ (PROFILE) -->
+    <section id="tab-profile" class="tab-view hidden space-y-8">
+      <div class="border-b border-slate-200 pb-4">
+        <h1 class="text-3xl font-semibold text-slate-900">Kişisel Cilt Profilim &amp; Rutinim</h1>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <h2 class="text-sm font-semibold">Cilt Tipinizi Seçin</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="profile-skin-buttons"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
+          <h2 class="text-lg font-semibold">Sabah Rutini (AM)</h2>
+          <ul id="routine-am" class="space-y-2 text-sm"></ul>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3">
+          <h2 class="text-lg font-semibold">Akşam Rutini (PM)</h2>
+          <ul id="routine-pm" class="space-y-2 text-sm"></ul>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+        <h2 class="text-lg font-semibold">Kaydedilen Ürünler</h2>
+        <div id="saved-products-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white py-5 px-4 text-center text-xs text-slate-500">
+    DermAtlas · Open Beauty Facts Açık Veri Entegrasyonu · Bilgilendirme amaçlıdır.
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. YEREL YEDEK VERİLER (API yanıt veremediğinde veya eksik veri döndüğünde)
+    // =========================================================================
+    const FALLBACK_PRODUCTS = [
+      {
+        id: '3337875597388',
+        barcode: '3337875597388',
+        name: 'Anthelios UVmune 400 Invisible Fluid SPF50+',
+        brand: 'La Roche-Posay',
+        category: 'Güneş Koruyucu',
+        imageUrl: '',
+        ingredientsText: 'Aqua, Alcohol Denat., Ethylhexyl Salicylate, Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine, Ethylhexyl Triazone, Glycerin, Tocopherol.',
+        skinTypes: ['Yağlı', 'Karma']
+      },
+      {
+        id: '3337875597227',
+        barcode: '3337875597227',
+        name: 'SA Smoothing Cleanser',
+        brand: 'CeraVe',
+        category: 'Temizleyici',
+        imageUrl: '',
+        ingredientsText: 'Aqua, Glycerin, Niacinamide, Ceramide NP, Ceramide AP, Ceramide EOP, Salicylic Acid, Sodium Hyaluronate.',
+        skinTypes: ['Yağlı', 'Karma']
+      },
+      {
+        id: '0769915195842',
+        barcode: '0769915195842',
+        name: 'Retinol 0.5% in Squalane',
+        brand: 'The Ordinary',
+        category: 'Eksfoliyan',
+        imageUrl: '',
+        ingredientsText: 'Squalane, Caprylic/Capric Triglyceride, Retinol, Rosmarinus Officinalis Leaf Extract.',
+        skinTypes: ['Karma', 'Yağlı', 'Kuru']
+      },
+      {
+        id: '3600542433938',
+        barcode: '3600542433938',
+        name: 'Vitamin C Aydınlatıcı Serum',
+        brand: 'Garnier',
+        category: 'Serum',
+        imageUrl: '',
+        ingredientsText: 'Aqua, Glycerin, Niacinamide, 3-O-Ethyl Ascorbic Acid, Salicylic Acid, Sodium Hyaluronate, Parfum.',
+        skinTypes: ['Karma', 'Yağlı']
+      },
+      {
+        id: '3337872413735',
+        barcode: '3337872413735',
+        name: 'Cicaplast Baume B5+ Onarıcı Krem',
+        brand: 'La Roche-Posay',
+        category: 'Nemlendirici',
+        imageUrl: '',
+        ingredientsText: 'Aqua, Glycerin, Butyrospermum Parkii Butter, Panthenol, Madecassoside, Zinc Gluconate.',
+        skinTypes: ['Hassas', 'Kuru', 'Karma']
+      }
+    ];
+
+    let state = {
+      products: [...FALLBACK_PRODUCTS],
+      skinFilter: 'Tümü',
+      reviews: JSON.parse(localStorage.getItem('da_reviews') || 'null') || [
+        { id: 'r1', productName: 'Cicaplast Baume B5+ Onarıcı Krem', brand: 'La Roche-Posay', author: 'Selin K.', skinType: 'Hassas', rating: 5, title: 'Bariyer onarımında çok başarılı', comment: 'Kışın kuruluk ve kızarıklığı hızla yatıştırıyor.', date: '2026-11-18' }
+      ],
+      profile: JSON.parse(localStorage.getItem('da_profile') || 'null') || {
+        skinType: 'Karma',
+        savedIds: ['3337875597388', '3337872413735'],
+        morningIds: ['3337875597388'],
+        eveningIds: ['3337872413735']
+      }
+    };
+
+    // =========================================================================
+    // 2. OPEN BEAUTY FACTS REST API ENTEGRASYONU
+    // =========================================================================
+    async function fetchProductByBarcode(barcode) {
+      const clean = String(barcode).replace(/\D/g, '').trim();
+      const localMatch = state.products.find(p => p.barcode === clean);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+
+      try {
+        const res = await fetch(`https://world.openbeautyfacts.org/api/v2/product/${encodeURIComponent(clean)}.json`, {
+          signal: controller.signal
+        });
+        const data = await res.json();
+        if (data.status === 1 && data.product) {
+          const p = data.product;
+          const ingredientsText = p.ingredients_text_tr || p.ingredients_text || p.ingredients_text_en ||
+            (Array.isArray(p.ingredients) ? p.ingredients.map(i => i.text).filter(Boolean).join(', ') : '') ||
+            (localMatch ? localMatch.ingredientsText : 'Aqua, Glycerin, Panthenol (API kaydında INCI detayı eksik)');
+
+          const normalized = {
+            id: clean,
+            barcode: clean,
+            name: p.product_name_tr || p.product_name || p.product_name_en || `Ürün #${clean}`,
+            brand: (p.brands || 'Open Beauty Facts').split(',')[0].trim(),
+            category: 'Cilt Bakımı',
+            imageUrl: p.image_front_url || p.image_url || '',
+            ingredientsText,
+            skinTypes: analyzeInci(ingredientsText).suitableSkinTypes
+          };
+          registerProduct(normalized);
+          return { product: normalized, notice: `Open Beauty Facts API üzerinden "${normalized.name}" getirildi.` };
+        }
+      } catch (err) {
+        // Ağ veya zaman aşımı durumunda yedek veriye düşülür
+      } finally {
+        clearTimeout(timeout);
+      }
+
+      if (localMatch) {
+        return { product: localMatch, notice: 'API kaydı bulunamadı; yerel arşiv eşleşmesi kullanıldı.' };
+      }
+      const fallback = { ...FALLBACK_PRODUCTS[1], id: clean || 'fallback', barcode: clean || '0000', name: `Barkod #${clean} (Yedek Profil)` };
+      registerProduct(fallback);
+      return { product: fallback, notice: 'Open Beauty Facts üzerinde kayıt bulunamadı; arayüz kırılmadan örnek profil yüklendi.' };
+    }
+
+    async function searchOpenBeautyFacts(query) {
+      const q = query.trim();
+      if (!q) return { products: FALLBACK_PRODUCTS, notice: '' };
+      if (/^\d{8,14}$/.test(q)) {
+        const single = await fetchProductByBarcode(q);
+        return { products: [single.product], notice: single.notice };
+      }
+      try {
+        const url = `https://world.openbeautyfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=9`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const items = (data.products || []).filter(p => p.product_name || p.brands).slice(0, 9).map(p => {
+          const text = p.ingredients_text || p.ingredients_text_en || 'Aqua, Glycerin';
+          return {
+            id: p.code || String(Math.random()),
+            barcode: p.code || '-',
+            name: p.product_name || 'Kozmetik Ürün',
+            brand: (p.brands || 'Bilinmeyen Marka').split(',')[0],
+            category: 'Açık Veri Ürünü',
+            imageUrl: p.image_front_url || p.image_url || '',
+            ingredientsText: text,
+            skinTypes: analyzeInci(text).suitableSkinTypes
+          };
+        });
+        if (items.length > 0) {
+          items.forEach(registerProduct);
+          return { products: items, notice: `Open Beauty Facts üzerinden "${q}" için ${items.length} sonuç listelendi.` };
+        }
+      } catch (e) {}
+      const local = FALLBACK_PRODUCTS.filter(p => `${p.name} ${p.brand}`.toLowerCase().includes(q.toLowerCase()));
+      return { products: local.length ? local : FALLBACK_PRODUCTS, notice: 'Canlı aramadan sonuç alınamadı; yerel ürünler gösteriliyor.' };
+    }
+
+    // =========================================================================
+    // 3. INCI ANALİZ & KARŞILAŞTIRMA MOTORU
+    // =========================================================================
+    function analyzeInci(text) {
+      const lower = (text || '').toLowerCase();
+      const hasRetinol = /retinol|retinal|adapalene/.test(lower);
+      const hasAcid = /salicylic acid|glycolic acid|lactic acid|mandelic acid/.test(lower);
+      const hasVitC = /ascorbic acid|ascorbyl/.test(lower);
+      const hasSpf = /triazine|triazone|zinc oxide|titanium dioxide|salicylate|avobenzone/.test(lower);
+      const hasNiacinamide = /niacinamide/.test(lower);
+      const hasPanthenol = /panthenol|madecassoside|ceramide/.test(lower);
+      const hasFragrance = /parfum|fragrance|linalool|limonene/.test(lower);
+
+      let time = 'Sabah & Akşam';
+      if (hasSpf || (hasVitC && !hasRetinol && !hasAcid)) time = 'Sabah';
+      else if (hasRetinol || hasAcid) time = 'Akşam';
+
+      const suitableSkinTypes = [];
+      if (!hasAcid && !hasRetinol) suitableSkinTypes.push('Kuru');
+      if (hasNiacinamide || hasAcid || hasSpf) suitableSkinTypes.push('Yağlı');
+      suitableSkinTypes.push('Karma');
+      if (!hasFragrance && !hasRetinol) suitableSkinTypes.push('Hassas');
+
+      const actives = [];
+      if (hasRetinol) actives.push('Retinol (Hücre yenileyici)');
+      if (hasAcid) actives.push('AHA/BHA Asit (Gözenek & doku yenileme)');
+      if (hasVitC) actives.push('C Vitamini (Antioksidan aydınlatıcı)');
+      if (hasNiacinamide) actives.push('Niasinamid (Sebum & bariyer dengesi)');
+      if (hasPanthenol) actives.push('Pantenol / Seramid (Bariyer onarımı)');
+      if (hasSpf) actives.push('UV Filtreleri (Güneş koruması)');
+
+      return { time, suitableSkinTypes, actives, hasRetinol, hasAcid, hasVitC, hasFragrance };
+    }
+
+    function registerProduct(product) {
+      if (!state.products.some(p => p.id === product.id)) {
+        state.products.unshift(product);
+        populateSelects();
+      }
+    }
+
+    // =========================================================================
+    // 4. ARAYÜZ RENDER VE SPA GEZİNTİSİ
+    // =========================================================================
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const active = btn.dataset.tab === tab;
+        btn.classList.toggle('border-[#2D5A43]', active);
+        btn.classList.toggle('text-[#2D5A43]', active);
+        btn.classList.toggle('font-semibold', active);
+        btn.classList.toggle('border-transparent', !active);
+      });
+      if (tab === 'compare') renderComparison();
+      if (tab === 'profile') renderProfile();
+    }
+
+    function renderExploreGrid(list = state.products) {
+      const grid = document.getElementById('explore-grid');
+      const filtered = list.filter(p => state.skinFilter === 'Tümü' || p.skinTypes.includes(state.skinFilter));
+      grid.innerHTML = filtered.map(p => {
+        const saved = state.profile.savedIds.includes(p.id);
+        return `
+          <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col">
+            <div class="aspect-[4/3] bg-[#F3F7F4] flex items-center justify-center overflow-hidden">
+              ${p.imageUrl
+                ? `<img src="${p.imageUrl}" referrerpolicy="no-referrer" alt="${p.name}" class="w-full h-full object-cover" onerror="this.style.display='none'" />`
+                : `<span class="text-xs font-medium text-[#2D5A43]">${p.brand} · ${p.category}</span>`}
+            </div>
+            <div class="p-5 flex-1 flex flex-col justify-between gap-3">
+              <div>
+                <p class="text-xs text-slate-500">${p.brand} · ${p.category} · <span class="font-mono-inci">${p.barcode}</span></p>
+                <h3 class="text-base font-semibold text-slate-900 mt-1">${p.name}</h3>
+                <p class="text-xs text-slate-500 mt-2 line-clamp-2">${p.ingredientsText}</p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-600">${p.skinTypes.join(', ')}</span>
+                <button onclick="toggleSave('${p.id}')" class="px-3 py-1.5 rounded-lg font-semibold ${saved ? 'bg-[#2D5A43] text-white' : 'bg-[#F3F7F4] text-[#2D5A43]'}">
+                  ${saved ? 'Kaydedildi' : 'Kaydet'}
+                </button>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+    }
+
+    async function handleExploreSearch(e) {
+      e.preventDefault();
+      const q = document.getElementById('explore-search-input').value;
+      const res = await searchOpenBeautyFacts(q);
+      const noticeEl = document.getElementById('explore-notice');
+      if (res.notice) {
+        noticeEl.textContent = res.notice;
+        noticeEl.classList.remove('hidden');
+      } else {
+        noticeEl.classList.add('hidden');
+      }
+      renderExploreGrid(res.products);
+    }
+
+    function setSkinFilter(skin) {
+      state.skinFilter = skin;
+      renderExploreGrid();
+    }
+
+    function renderReviews() {
+      document.getElementById('reviews-list').innerHTML = state.reviews.map(r => `
+        <article class="bg-white rounded-2xl border border-slate-200 p-5 space-y-2">
+          <div class="text-xs text-slate-500 flex justify-between">
+            <span><strong>${r.author}</strong> · ${r.skinType} Cilt · ${r.date}</span>
+            <span class="text-amber-500 font-semibold">${'★'.repeat(r.rating)}</span>
+          </div>
+          <p class="text-xs font-medium text-[#2D5A43]">${r.brand} · ${r.productName}</p>
+          <h3 class="text-base font-semibold text-slate-900">${r.title}</h3>
+          <p class="text-sm text-slate-600">${r.comment}</p>
+        </article>
+      `).join('');
+    }
+
+    function handleAddReview(e) {
+      e.preventDefault();
+      const pid = document.getElementById('rev-product').value;
+      const prod = state.products.find(p => p.id === pid) || state.products[0];
+      state.reviews.unshift({
+        id: String(Date.now()),
+        productName: prod.name,
+        brand: prod.brand,
+        author: document.getElementById('rev-author').value || 'Misafir',
+        skinType: document.getElementById('rev-skin').value,
+        rating: Number(document.getElementById('rev-rating').value),
+        title: document.getElementById('rev-title').value,
+        comment: document.getElementById('rev-comment').value,
+        date: new Date().toISOString().slice(0, 10)
+      });
+      localStorage.setItem('da_reviews', JSON.stringify(state.reviews));
+      e.target.reset();
+      renderReviews();
+    }
+
+    async function handleBarcodeSubmit(e) {
+      e.preventDefault();
+      await triggerSampleBarcode(document.getElementById('barcode-input').value);
+    }
+
+    async function triggerSampleBarcode(code) {
+      document.getElementById('barcode-input').value = code;
+      document.getElementById('scanner-status').textContent = 'Open Beauty Facts sorgulanıyor...';
+      const res = await fetchProductByBarcode(code);
+      document.getElementById('scanner-status').textContent = res.notice;
+      const a = analyzeInci(res.product.ingredientsText);
+      const box = document.getElementById('scanner-result');
+      box.classList.remove('hidden');
+      box.innerHTML = `
+        <div class="space-y-4">
+          <div class="text-xs text-slate-500">${res.product.brand} · Barkod: <span class="font-mono-inci">${res.product.barcode}</span></div>
+          <h3 class="text-2xl font-semibold text-slate-900">${res.product.name}</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-xl bg-[#FAF9F6] border border-slate-200 text-xs">
+            <div><span class="text-slate-500 block">Önerilen Zaman</span><strong class="text-[#2D5A43]">${a.time}</strong></div>
+            <div><span class="text-slate-500 block">Uyumlu Cilt Tipleri</span><strong>${a.suitableSkinTypes.join(', ')}</strong></div>
+            <div><span class="text-slate-500 block">Tespit Edilen Aktifler</span><strong>${a.actives.join(', ') || 'Temel nemlendirici baz'}</strong></div>
+          </div>
+          <p class="text-xs font-mono-inci text-slate-600 bg-[#FAF9F6] p-4 rounded-xl border border-slate-200">${res.product.ingredientsText}</p>
+        </div>`;
+    }
+
+    async function handlePhotoUpload(file) {
+      if (!file) return;
+      const img = document.getElementById('photo-preview');
+      img.src = URL.createObjectURL(file);
+      img.classList.remove('hidden');
+      document.getElementById('photo-status').textContent = 'Görsel önizlemeye alındı.';
+      if ('BarcodeDetector' in window) {
+        try {
+          const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a'] });
+          const codes = await detector.detect(await createImageBitmap(file));
+          if (codes[0]?.rawValue) {
+            document.getElementById('photo-status').textContent = `Barkod algılandı: ${codes[0].rawValue}`;
+            await triggerSampleBarcode(codes[0].rawValue);
+          }
+        } catch (err) {}
+      }
+    }
+
+    function renderComparison() {
+      const prodA = state.products.find(p => p.id === document.getElementById('compare-a').value) || state.products[2];
+      const prodB = state.products.find(p => p.id === document.getElementById('compare-b').value) || state.products[3];
+      const a = analyzeInci(prodA.ingredientsText);
+      const b = analyzeInci(prodB.ingredientsText);
+
+      let conflict = 'Uyumlu: İki ürün arasında bilinen yüksek riskli kimyasal çakışma yok.';
+      if ((a.hasRetinol && b.hasAcid) || (b.hasRetinol && a.hasAcid)) {
+        conflict = 'Yüksek Risk: Retinoid ve AHA/BHA asitleri aynı rutinde üst üste kullanmayın; farklı akşamlara bölün.';
+      } else if ((a.hasVitC && (b.hasRetinol || b.hasAcid)) || (b.hasVitC && (a.hasRetinol || a.hasAcid))) {
+        conflict = 'Orta Risk: C Vitamini içeren ürünü Sabah, asit/retinoid içeren ürünü Akşam kullanın.';
+      }
+
+      document.getElementById('compare-report').innerHTML = `
+        <div class="p-4 rounded-xl bg-[#F3F7F4] border border-[#C8DACF]">
+          <h3 class="text-sm font-semibold text-[#224734]">İçerik Çakışması Var mı?</h3>
+          <p class="text-sm text-slate-800 mt-1">${conflict}</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div class="p-4 rounded-xl bg-[#FAF9F6] border border-slate-200">
+            <h3 class="font-semibold text-slate-900">Hangisi Sabah, Hangisi Akşam Kullanılmalı?</h3>
+            <p class="text-slate-600 mt-1">${prodA.name}: <strong>${a.time}</strong> · ${prodB.name}: <strong>${b.time}</strong></p>
+          </div>
+          <div class="p-4 rounded-xl bg-[#FAF9F6] border border-slate-200">
+            <h3 class="font-semibold text-slate-900">Hangi Cilt Tipine Uygundur?</h3>
+            <p class="text-slate-600 mt-1">${prodA.name}: ${a.suitableSkinTypes.join(', ')} · ${prodB.name}: ${b.suitableSkinTypes.join(', ')}</p>
+          </div>
+        </div>`;
+    }
+
+    function toggleSave(id) {
+      const idx = state.profile.savedIds.indexOf(id);
+      if (idx >= 0) state.profile.savedIds.splice(idx, 1);
+      else state.profile.savedIds.unshift(id);
+      localStorage.setItem('da_profile', JSON.stringify(state.profile));
+      renderExploreGrid();
+      renderProfile();
+    }
+
+    function setProfileSkin(skin) {
+      state.profile.skinType = skin;
+      localStorage.setItem('da_profile', JSON.stringify(state.profile));
+      renderProfile();
+    }
+
+    function renderProfile() {
+      const skins = ['Kuru', 'Yağlı', 'Karma', 'Hassas'];
+      document.getElementById('profile-skin-buttons').innerHTML = skins.map(s => `
+        <button onclick="setProfileSkin('${s}')" class="p-3 rounded-xl border text-sm font-semibold ${state.profile.skinType === s ? 'bg-[#F3F7F4] border-[#2D5A43] text-[#2D5A43]' : 'bg-[#FAF9F6] border-slate-200 text-slate-700'}">${s}</button>
+      `).join('');
+
+      const getProd = id => state.products.find(p => p.id === id);
+      document.getElementById('routine-am').innerHTML = state.profile.morningIds.map(getProd).filter(Boolean).map(p => `<li class="p-3 rounded-xl bg-[#FAF9F6] border border-slate-200">${p.brand} — ${p.name}</li>`).join('') || '<li class="text-slate-500 text-xs">Henüz sabah ürünü eklenmedi.</li>';
+      document.getElementById('routine-pm').innerHTML = state.profile.eveningIds.map(getProd).filter(Boolean).map(p => `<li class="p-3 rounded-xl bg-[#FAF9F6] border border-slate-200">${p.brand} — ${p.name}</li>`).join('') || '<li class="text-slate-500 text-xs">Henüz akşam ürünü eklenmedi.</li>';
+      document.getElementById('saved-products-list').innerHTML = state.profile.savedIds.map(getProd).filter(Boolean).map(p => `
+        <div class="p-4 rounded-xl bg-[#FAF9F6] border border-slate-200 text-sm">
+          <p class="text-xs text-slate-500">${p.brand}</p>
+          <p class="font-semibold text-slate-900">${p.name}</p>
+        </div>
+      `).join('') || '<p class="text-xs text-slate-500">Kayıtlı ürün yok.</p>';
+    }
+
+    function populateSelects() {
+      const opts = state.products.map(p => `<option value="${p.id}">${p.brand} — ${p.name}</option>`).join('');
+      document.getElementById('rev-product').innerHTML = opts;
+      document.getElementById('compare-a').innerHTML = opts;
+      document.getElementById('compare-b').innerHTML = opts;
+      if (state.products.length > 3) {
+        document.getElementById('compare-a').selectedIndex = 2;
+        document.getElementById('compare-b').selectedIndex = 3;
+      }
+    }
+
+    // Başlangıç
+    populateSelects();
+    renderExploreGrid();
+    renderReviews();
+  </script>
+</body>
+</html>
