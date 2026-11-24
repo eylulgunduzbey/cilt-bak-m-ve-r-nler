@@ -1,3 +1,34 @@
+# 💖 DermAtlas - Social Beauty & INCI Analysis Platform
+
+Bu proje, açık erişimli veri kaynakları (Open Beauty Facts API) ve modern web teknolojileri kullanılarak geliştirilmiş interaktif, sosyal ve süslü bir cilt bakım analiz rehberidir.
+
+## 🔓 Açık Erişim (Open Access) Entegrasyonu
+Projede açık veri kaynağı olarak **[Open Beauty Facts API](https://world.openbeautyfacts.org/)** kullanılmıştır. Ürün barkodları ve ürün ismi aramaları ile içerik listeleri (INCI) çekilmekte, anlık duyarlılık ve uyum analizleri yapılmaktadır.
+
+## 🚀 Öne Çıkan Özellikler
+- **🔥 Viral Trendler & Influencer Önerileri:** Sosyal medyada çok satan ve onaylanmış popüler ürün kartları.
+- **🔍 İsim İle Ürün Arama:** Barkod dışında kelime bazlı ürün sorgulama motoru.
+- **👤 Profil & Fotoğraf Yükleme:** Kullanıcıların profil resmi yükleyebileceği ve özel koleksiyonlar oluşturabileceği sosyal alan.
+- **📊 Yüzdelik Alerji Riski & Cilt Uyum Skoru:** Open Beauty Facts verileri üzerinden kişiselleştirilmiş skor üretimi.
+- **🖨️ PDF / Baskı Desteği:** Rutin kartlarını tek tıkla dijital olarak indirme.
+
+## 📝 Geliştirme Günlüğü (Changelog)
+
+### 📌 Versiyon 1.4 (24 Kasım 2026)
+- **Yeni Tasarım:** Uygulama teması Rose/Pink/Violet degrade tonları ve cam efekti (glassmorphism) ile tamamen yenilendi.
+- **Yeni Özellik:** Ana sayfaya "Viral Trendler & Influencer Önerileri" modülü eklendi.
+- **Yeni Özellik:** Ürün ismi ve kelime bazlı arama modülü entegre edildi.
+- **Yeni Özellik:** Fotoğraf yüklenebilir Kullanıcı Profili ve Özel Koleksiyonlar (LocalStorage) eklendi.
+
+### 📌 Versiyon 1.3 (24 Kasım 2026)
+- Cilt Tipi Seçici ve kişiselleştirilmiş Uyum Skoru (% Match) eklendi.
+- Tarayıcı üzerinden Rutin Kartını PDF/Baskı olarak indirme desteği sağlandı.
+
+### 📌 Versiyon 1.2 (24 Kasım 2026)
+- Alerjik Reaksiyon & Risk Skoru Motoru ve LocalStorage sekmeleri eklendi.
+
+### 📌 Versiyon 1.0 (24 Kasım 2026)
+- Proje kuruldu, Open Beauty Facts API bağlandı ve Vercel üzerinde canlıya alındı.
 # 🌿 DermAtlas - AI Destekli Cilt Bakım & İNCİ Analiz Rehberi
 
 Bu proje, açık erişimli veri kaynakları ve modern web teknolojileri kullanılarak geliştirilmiş interaktif bir cilt bakımı ve ürün analiz platformudur.
