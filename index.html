@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -76,7 +78,7 @@ background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
 </div>
 </section>
 
-<!-- 1. VIRAL TRENDLER SEKMESİ (CAN ALICI RENKLİ KISIM) -->
+<!-- 1. VIRAL TRENDLER SEKMESİ -->
 <section id="tab-explore" class="tab-content active space-y-6">
 <div class="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white rounded-3xl p-8 text-center space-y-3 shadow-xl relative overflow-hidden">
 <span class="inline-block bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">✨ Social Beauty Lab</span>
@@ -156,7 +158,7 @@ background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
 <!-- ALERJİ VE CİLT TİPİ UYGUNLUK KARTLARI -->
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 <div class="bg-pink-50/50 p-4 rounded-2xl border border-pink-100 space-y-2">
-<span class="text-[10px] font-bold uppercase tracking-wider text-pink-600">📊 Tahmini Alerji Riski:</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-pink-600">📊 Tahmini Alerji & İrritasyon Riski:</span>
 <div class="flex items-center gap-2">
 <span id="risk-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg"></span>
 <span id="risk-score-desc" class="text-xs font-bold text-stone-600"></span>
@@ -165,7 +167,7 @@ background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
 <div class="bg-purple-50/50 p-4 rounded-2xl border border-purple-100 space-y-2">
 <span class="text-[10px] font-bold uppercase tracking-wider text-purple-600">👤 Cilt Tipi Uyum Skoru:</span>
 <div class="flex items-center gap-2">
-<span id="match-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800"></span>
+<span id="match-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg"></span>
 <span id="match-score-desc" class="text-xs font-bold text-stone-600"></span>
 </div>
 </div>
@@ -189,7 +191,7 @@ background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
 </div>
 </section>
 
-<!-- 3. İSİMLE ARAMA SEKMESİ (YENİ EKLENDİ) -->
+<!-- 3. İSİMLE ARAMA SEKMESİ -->
 <section id="tab-search" class="tab-content space-y-6">
 <div class="max-w-2xl mx-auto bg-white p-6 rounded-3xl border border-pink-100 shadow-lg space-y-4">
 <h2 class="font-black text-xl text-stone-800">🔍 Ürün İsmi Veya İçerik Arama</h2>
@@ -204,7 +206,7 @@ background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
 <div id="search-results-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto"></div>
 </section>
 
-<!-- 4. KULLANICI PROFİLİ VE KOLEKSİYONLAR SEKMESİ (YENİ EKLENDİ) -->
+<!-- 4. KULLANICI PROFİLİ VE KOLEKSİYONLAR SEKMESİ -->
 <section id="tab-profile" class="tab-content space-y-6">
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- Profil Kartı (Fotoğraflı) -->
@@ -235,9 +237,7 @@ background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
 <button onclick="createNewCollection()" class="bg-pink-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-pink-600">+ Yeni Koleksiyon Ekle</button>
 </div>
 
-<div id="collections-container" class="space-y-4">
-<!-- Otomatik Koleksiyonlar Buraya Gelecek -->
-</div>
+<div id="collections-container" class="space-y-4"></div>
 </div>
 </div>
 </section>
@@ -298,6 +298,7 @@ activeBtn.classList.add('bg-pink-500', 'text-white', 'shadow-md');
 }
 }
 
+// Cilt Tipi Değiştiğinde Anında Skorları Yenile
 function changeSkinType() {
 selectedSkinType = document.getElementById('skin-type-select').value;
 if (currentProduct) {
@@ -364,9 +365,9 @@ listContainer.innerHTML = `<p class="text-xs text-rose-500 col-span-2 text-cente
 
 function processAndDisplayProduct(barcode, name, brand, ingredients) {
 const resultDiv = document.getElementById('product-result');
-const riskAnalysis = calculateRiskAndMatch(ingredients.toLowerCase());
+currentProduct = { barcode, name, brand, ingredients };
 
-currentProduct = { barcode, name, brand, ingredients, riskPercent: riskAnalysis.percent };
+const riskAnalysis = calculateRiskAndMatch(ingredients.toLowerCase());
 
 document.getElementById('product-title').innerText = name;
 document.getElementById('product-brand').innerText = "Marka: " + brand;
@@ -377,31 +378,72 @@ updateFavButtonState();
 resultDiv.classList.remove('hidden');
 }
 
+// DİNAMİK CİLT TİPİ VE HASSASİYET SKOR MOTORU
 function calculateRiskAndMatch(text) {
 let riskPoints = 0;
-let matchPoints = 85;
+let matchPoints = 75;
 let tags = [];
 
+// Genel Alerjenler
 if (text.includes("parfum") || text.includes("fragrance")) {
-riskPoints += 30;
+riskPoints += 25;
 tags.push({ name: "⚠️ Parfüm İçerir", color: "bg-rose-100 text-rose-800" });
 }
-if (text.includes("alcohol denat") || text.includes("alcohol")) {
-riskPoints += 25;
-tags.push({ name: "⚠️ Kurutucu Alkol İçerir", color: "bg-amber-100 text-amber-800" });
-}
-if (text.includes("sulfate") || text.includes("sls")) {
-riskPoints += 20;
-tags.push({ name: "⚠️ Sülfat İçerir", color: "bg-purple-100 text-purple-800" });
+if (text.includes("paraben")) {
+riskPoints += 15;
+tags.push({ name: "⚠️ Paraben İçerir", color: "bg-purple-100 text-purple-800" });
 }
 
-if (selectedSkinType === "oily" && (text.includes("salicylic") || text.includes("niacinamide"))) matchPoints += 15;
-if (selectedSkinType === "dry" && (text.includes("hyaluronic") || text.includes("glycerin"))) matchPoints += 15;
+// Cilt Tipine Göre Özelleştirilmiş Mantık
+if (selectedSkinType === "oily") {
+// Yağlı Cilt Kuralları
+if (text.includes("alcohol denat") || text.includes("alcohol")) {
+riskPoints += 15;
+tags.push({ name: "⚠️ Alkol (Yağlı Cildi Kurutup Sebumu Tetikleyebilir)", color: "bg-amber-100 text-amber-800" });
+}
+if (text.includes("shea butter") || text.includes("coconut oil") || text.includes("myristate")) {
+matchPoints -= 40;
+riskPoints += 20;
+tags.push({ name: "🚫 Gözenek Tıkayıcı (Komedojenik)", color: "bg-rose-100 text-rose-800" });
+}
+if (text.includes("salicylic") || text.includes("niacinamide") || text.includes("zinc") || text.includes("bha")) {
+matchPoints += 25;
+tags.push({ name: "✓ Yağ Dengileyici İÇERİK (Salisilik/Çinko)", color: "bg-emerald-100 text-emerald-800" });
+}
+} else if (selectedSkinType === "dry") {
+// Kuru & Hassas Cilt Kuralları
+if (text.includes("alcohol denat") || text.includes("alcohol")) {
+riskPoints += 45;
+matchPoints -= 40;
+tags.push({ name: "🚨 Kurutucu Alkol (Kuru Cilt İçin Yüksek Risk!)", color: "bg-rose-200 text-rose-900" });
+}
+if (text.includes("sulfate") || text.includes("sls") || text.includes("sles")) {
+riskPoints += 30;
+matchPoints -= 25;
+tags.push({ name: "⚠️ Sülfat (Bariyer Aşındırıcı)", color: "bg-amber-100 text-amber-800" });
+}
+if (text.includes("hyaluronic") || text.includes("glycerin") || text.includes("ceramide") || text.includes("squalane")) {
+matchPoints += 25;
+tags.push({ name: "✓ Kuru Cildin Dostu (Nemlendirici/Seramid)", color: "bg-teal-100 text-teal-800" });
+}
+} else {
+// Normal / Karma Cilt Kuralları
+if (text.includes("alcohol denat")) riskPoints += 20;
+if (text.includes("hyaluronic") || text.includes("niacinamide")) matchPoints += 15;
+}
 
 const percent = Math.min(riskPoints, 100);
-const matchPercent = Math.min(matchPoints, 100);
+const matchPercent = Math.max(10, Math.min(matchPoints, 100));
 
-return { percent, level: percent >= 50 ? "Yüksek Risk" : "Düşük Risk", matchPercent, matchDesc: "Uyumlu", tags };
+let level = "Düşük Risk";
+if (percent >= 50) level = "Yüksek İrritasyon Riski";
+else if (percent > 0) level = "Orta Risk";
+
+let matchDesc = "Çok Uyumlu";
+if (matchPercent < 50) matchDesc = "Uygun Değil / Dikkatli Kullanın";
+else if (matchPercent < 75) matchDesc = "Orta Uyumlu";
+
+return { percent, level, matchPercent, matchDesc, tags };
 }
 
 function renderRiskUI(analysis) {
@@ -415,21 +457,25 @@ const tagsDiv = document.getElementById('allergen-tags');
 percentEl.innerText = "%" + analysis.percent;
 barEl.style.width = analysis.percent + "%";
 descEl.innerText = analysis.level;
+
 matchPercentEl.innerText = "%" + analysis.matchPercent;
 matchDescEl.innerText = analysis.matchDesc;
 
-percentEl.className = analysis.percent >= 50 ? "text-lg font-black px-2.5 py-0.5 rounded-lg bg-rose-200 text-rose-900" : "text-lg font-black px-2.5 py-0.5 rounded-lg bg-emerald-200 text-emerald-900";
+// Alerji Risk Renkleri
+percentEl.className = analysis.percent >= 50 ? "text-lg font-black px-2.5 py-0.5 rounded-lg bg-rose-200 text-rose-900" : (analysis.percent > 0 ? "text-lg font-black px-2.5 py-0.5 rounded-lg bg-amber-200 text-amber-900" : "text-lg font-black px-2.5 py-0.5 rounded-lg bg-emerald-200 text-emerald-900");
 barEl.className = analysis.percent >= 50 ? "h-3 rounded-full bg-rose-500 transition-all duration-500" : "h-3 rounded-full bg-emerald-500 transition-all duration-500";
 
-tagsDiv.innerHTML = analysis.tags.length ? analysis.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold ${t.color}">${t.name}</span>`).join('') : `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">✓ İrritan Madde Bulunamadı</span>`;
+// Uyum Skoru Renkleri
+matchPercentEl.className = analysis.matchPercent >= 75 ? "text-lg font-black px-2.5 py-0.5 rounded-lg bg-purple-200 text-purple-900" : "text-lg font-black px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-900";
+
+tagsDiv.innerHTML = analysis.tags.length ? analysis.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold ${t.color}">${t.name}</span>`).join('') : `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">✓ Hassasiyet Yaratacak Madde Bulunamadı</span>`;
 }
 
-// PROFiL & FOTOĞRAF & KOLEKSİYON YÖNETİMİ
+// PROFİL & KOLEKSİYON YÖNETİMİ
 function loadProfileImage(event) {
 const reader = new FileReader();
 reader.onload = function() {
-const output = document.getElementById('profile-img');
-output.src = reader.result;
+document.getElementById('profile-img').src = reader.result;
 localStorage.setItem('dermatlas_profile_img', reader.result);
 };
 reader.readAsDataURL(event.target.files[0]);
@@ -481,9 +527,8 @@ btn.className = isFav ? "no-print px-4 py-2 rounded-xl text-xs font-bold bg-pink
 function updateDashboardBadges() {
 document.getElementById('fav-badge-count').innerText = favorites.length;
 document.getElementById('stat-favs').innerText = favorites.length;
-document.getElementById('risk-badge-count').innerText = favorites.filter(f => f.riskPercent >= 50).length;
+document.getElementById('risk-badge-count').innerText = favorites.filter(f => calculateRiskAndMatch(f.ingredients.toLowerCase()).percent >= 50).length;
 }
 </script>
 </body>
 </html>
-
