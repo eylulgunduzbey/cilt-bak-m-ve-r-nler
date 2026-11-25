@@ -1,488 +1,489 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DermAtlas - Cilt Bakım & İNCİ Analiz Rehberi</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        @media print {
-            header, nav, .no-print { display: none !important; }
-            body { background: white; color: black; }
-            .print-area { border: none !important; shadow: none !important; }
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #fff5f7 0%, #fcf0f8 50%, #f3e8ff 100%);
-        }
-        .card-sparkle {
-            background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DermAtlas - Cilt Bakım & İNCİ Analiz Rehberi</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+@media print {
+header, nav, .no-print { display: none !important; }
+body { background: white; color: black; }
+.print-area { border: none !important; shadow: none !important; }
+}
+.gradient-bg {
+background: linear-gradient(135deg, #fff5f7 0%, #fcf0f8 50%, #f3e8ff 100%);
+}
+.card-sparkle {
+background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+}
+</style>
 </head>
 <body class="gradient-bg text-stone-800 font-sans antialiased min-h-screen">
 
-    <!-- Header / Nav -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-pink-100 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <span class="text-3xl animate-bounce">💖</span>
-                <div>
-                    <h1 class="text-2xl font-black bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 bg-clip-text text-transparent">DermAtlas</h1>
-                    <p class="text-[10px] tracking-widest uppercase font-bold text-pink-400">Beauty & INCI Lab</p>
-                </div>
-            </div>
-            <nav class="flex flex-wrap justify-center gap-2 text-xs font-bold">
-                <button onclick="switchTab('explore')" class="tab-btn px-4 py-2.5 rounded-full bg-pink-500 text-white shadow-md shadow-pink-200 transition-all" id="btn-explore">🔥 Viral Trendler</button>
-                <button onclick="switchTab('scanner')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-scanner">📸 Barkod & Analiz</button>
-                <button onclick="switchTab('search')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-search">🔍 İsimle Arama</button>
-                <button onclick="switchTab('profile')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-profile">👤 Profilim & Koleksiyonlar</button>
-                <button onclick="switchTab('compare')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-compare">⚖️ Rutin Rehberi</button>
-            </nav>
-        </div>
-    </header>
+<!-- Header / Nav -->
+<header class="bg-white/80 backdrop-blur-md border-b border-pink-100 sticky top-0 z-50 shadow-sm">
+<div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="text-3xl animate-bounce">💖</span>
+<div>
+<h1 class="text-2xl font-black bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 bg-clip-text text-transparent">DermAtlas</h1>
+<p class="text-[10px] tracking-widest uppercase font-bold text-pink-400">Beauty & INCI Lab</p>
+</div>
+</div>
+<nav class="flex flex-wrap justify-center gap-2 text-xs font-bold">
+<button onclick="switchTab('explore')" class="tab-btn px-4 py-2.5 rounded-full bg-pink-500 text-white shadow-md shadow-pink-200 transition-all" id="btn-explore">🔥 Viral Trendler</button>
+<button onclick="switchTab('scanner')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-scanner">📸 Barkod & Analiz</button>
+<button onclick="switchTab('search')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-search">🔍 İsimle Arama</button>
+<button onclick="switchTab('profile')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-profile">👤 Profilim & Koleksiyonlar</button>
+<button onclick="switchTab('compare')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-compare">⚖️ Rutin Rehberi</button>
+</nav>
+</div>
+</header>
 
-    <!-- Main Content Containers -->
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+<!-- Main Content Containers -->
+<main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
 
-        <!-- CİLT TİPİ SEÇİMİ VE RENKLİ HIZLI FAVORİ PANOLARI -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 no-print">
-            <!-- Cilt Tipi Seçim Modülü -->
-            <div class="bg-white/90 p-4 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                <label class="text-xs font-bold uppercase tracking-wider text-pink-600 flex items-center gap-1">✨ Cilt Tipinizi Seçin:</label>
-                <select id="skin-type-select" onchange="changeSkinType()" class="w-full px-3 py-2 border border-pink-200 rounded-xl text-xs bg-pink-50/50 font-semibold text-pink-900 focus:ring-2 focus:ring-pink-400 outline-none">
-                    <option value="oily">Yağlı & Akneye Eğilimli Cilt</option>
-                    <option value="dry">Kuru & Hassas Cilt</option>
-                    <option value="normal">Normal / Karma Cilt</option>
-                </select>
-            </div>
-            <!-- Favori Pano -->
-            <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white p-4 rounded-2xl shadow-lg shadow-pink-200 flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold text-base">💖 Favori Ürünlerim</h3>
-                    <p class="text-pink-100 text-xs">Kaydedilen süslü favoriler</p>
-                </div>
-                <span id="fav-badge-count" class="text-2xl font-black bg-white text-pink-600 px-3.5 py-1 rounded-2xl shadow">0</span>
-            </div>
-            <!-- Risk Pano -->
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-2xl shadow-lg shadow-purple-200 flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold text-base">⚠️ Yüksek Riskli Ürünler</h3>
-                    <p class="text-purple-100 text-xs">Alerjen/İrritan içerenler</p>
-                </div>
-                <span id="risk-badge-count" class="text-2xl font-black bg-white text-purple-700 px-3.5 py-1 rounded-2xl shadow">0</span>
-            </div>
-        </section>
+<!-- CİLT TİPİ SEÇİMİ VE RENKLİ HIZLI FAVORİ PANOLARI -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4 no-print">
+<!-- Cilt Tipi Seçim Modülü -->
+<div class="bg-white/90 p-4 rounded-2xl border border-pink-100 shadow-sm space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-pink-600 flex items-center gap-1">✨ Cilt Tipinizi Seçin:</label>
+<select id="skin-type-select" onchange="changeSkinType()" class="w-full px-3 py-2 border border-pink-200 rounded-xl text-xs bg-pink-50/50 font-semibold text-pink-900 focus:ring-2 focus:ring-pink-400 outline-none">
+<option value="oily">Yağlı & Akneye Eğilimli Cilt</option>
+<option value="dry">Kuru & Hassas Cilt</option>
+<option value="normal">Normal / Karma Cilt</option>
+</select>
+</div>
+<!-- Favori Pano -->
+<div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white p-4 rounded-2xl shadow-lg shadow-pink-200 flex justify-between items-center">
+<div>
+<h3 class="font-bold text-base">💖 Favori Ürünlerim</h3>
+<p class="text-pink-100 text-xs">Kaydedilen süslü favoriler</p>
+</div>
+<span id="fav-badge-count" class="text-2xl font-black bg-white text-pink-600 px-3.5 py-1 rounded-2xl shadow">0</span>
+</div>
+<!-- Risk Pano -->
+<div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-2xl shadow-lg shadow-purple-200 flex justify-between items-center">
+<div>
+<h3 class="font-bold text-base">⚠️ Yüksek Riskli Ürünler</h3>
+<p class="text-purple-100 text-xs">Alerjen/İrritan içerenler</p>
+</div>
+<span id="risk-badge-count" class="text-2xl font-black bg-white text-purple-700 px-3.5 py-1 rounded-2xl shadow">0</span>
+</div>
+</section>
 
-        <!-- 1. VIRAL TRENDLER SEKMESİ (CAN ALICI RENKLİ KISIM) -->
-        <section id="tab-explore" class="tab-content active space-y-6">
-            <div class="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white rounded-3xl p-8 text-center space-y-3 shadow-xl relative overflow-hidden">
-                <span class="inline-block bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">✨ Social Beauty Lab</span>
-                <h2 class="text-3xl md:text-4xl font-black">En Çok Satanlar & Influencer Favorileri</h2>
-                <p class="text-pink-100 max-w-xl mx-auto text-sm">Sosyal medyada viral olan, güzellik ikonlarının önerdiği ve Open Beauty Facts ile onaylanmış popüler ürünler!</p>
-            </div>
+<!-- 1. VIRAL TRENDLER SEKMESİ (CAN ALICI RENKLİ KISIM) -->
+<section id="tab-explore" class="tab-content active space-y-6">
+<div class="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white rounded-3xl p-8 text-center space-y-3 shadow-xl relative overflow-hidden">
+<span class="inline-block bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">✨ Social Beauty Lab</span>
+<h2 class="text-3xl md:text-4xl font-black">En Çok Satanlar & Influencer Favorileri</h2>
+<p class="text-pink-100 max-w-xl mx-auto text-sm">Sosyal medyada viral olan, güzellik ikonlarının önerdiği ve Open Beauty Facts ile onaylanmış popüler ürünler!</p>
+</div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Viral Ürün 1 -->
-                <div class="card-sparkle p-6 rounded-2xl border border-pink-100 shadow-md hover:shadow-xl transition-all space-y-4 relative">
-                    <span class="absolute -top-3 right-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow">💖 Danla Bilic Öneriyor</span>
-                    <div class="text-4xl">💧</div>
-                    <div>
-                        <span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded-md">Leke Karşıtı</span>
-                        <h3 class="font-black text-lg text-stone-800 mt-2">Niacinamide %10 + Zinc %1</h3>
-                        <p class="text-xs text-stone-500 mt-1 leading-relaxed">Gözenek görünümünü anında küçülten, TikTok'un en çok konuşulan serumu.</p>
-                    </div>
-                    <div class="border-t border-pink-100 pt-3 flex justify-between items-center text-xs">
-                        <span class="font-bold text-pink-600">%95 Cilt Uyumu</span>
-                        <button onclick="quickAnalyze('3337875543248')" class="bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-xl font-bold">İncele ✨</button>
-                    </div>
-                </div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Viral Ürün 1 -->
+<div class="card-sparkle p-6 rounded-2xl border border-pink-100 shadow-md hover:shadow-xl transition-all space-y-4 relative">
+<span class="absolute -top-3 right-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow">💖 Danla Bilic Öneriyor</span>
+<div class="text-4xl">💧</div>
+<div>
+<span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded-md">Leke Karşıtı</span>
+<h3 class="font-black text-lg text-stone-800 mt-2">Niacinamide %10 + Zinc %1</h3>
+<p class="text-xs text-stone-500 mt-1 leading-relaxed">Gözenek görünümünü anında küçülten, TikTok'un en çok konuşulan serumu.</p>
+</div>
+<div class="border-t border-pink-100 pt-3 flex justify-between items-center text-xs">
+<span class="font-bold text-pink-600">%95 Cilt Uyumu</span>
+<button onclick="quickAnalyze('3337875543248')" class="bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-xl font-bold">İncele ✨</button>
+</div>
+</div>
 
-                <!-- Viral Ürün 2 -->
-                <div class="card-sparkle p-6 rounded-2xl border border-pink-100 shadow-md hover:shadow-xl transition-all space-y-4 relative">
-                    <span class="absolute -top-3 right-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow">✨ Duygu Özaslan Favorisi</span>
-                    <div class="text-4xl">🌸</div>
-                    <div>
-                        <span class="text-[10px] bg-pink-100 text-pink-700 font-bold px-2 py-0.5 rounded-md">Cam Cilt İksiri</span>
-                        <h3 class="font-black text-lg text-stone-800 mt-2">Hyaluronic Acid 2% + B5</h3>
-                        <p class="text-xs text-stone-500 mt-1 leading-relaxed">Cilde anında nem patlaması veren ve ışıltı katan ikonik nemlendirici.</p>
-                    </div>
-                    <div class="border-t border-pink-100 pt-3 flex justify-between items-center text-xs">
-                        <span class="font-bold text-emerald-600">%98 Temiz İçerik</span>
-                        <button onclick="quickAnalyze('3337875543248')" class="bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-xl font-bold">İncele ✨</button>
-                    </div>
-                </div>
+<!-- Viral Ürün 2 -->
+<div class="card-sparkle p-6 rounded-2xl border border-pink-100 shadow-md hover:shadow-xl transition-all space-y-4 relative">
+<span class="absolute -top-3 right-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow">✨ Duygu Özaslan Favorisi</span>
+<div class="text-4xl">🌸</div>
+<div>
+<span class="text-[10px] bg-pink-100 text-pink-700 font-bold px-2 py-0.5 rounded-md">Cam Cilt İksiri</span>
+<h3 class="font-black text-lg text-stone-800 mt-2">Hyaluronic Acid 2% + B5</h3>
+<p class="text-xs text-stone-500 mt-1 leading-relaxed">Cilde anında nem patlaması veren ve ışıltı katan ikonik nemlendirici.</p>
+</div>
+<div class="border-t border-pink-100 pt-3 flex justify-between items-center text-xs">
+<span class="font-bold text-emerald-600">%98 Temiz İçerik</span>
+<button onclick="quickAnalyze('3337875543248')" class="bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-xl font-bold">İncele ✨</button>
+</div>
+</div>
 
-                <!-- Viral Ürün 3 -->
-                <div class="card-sparkle p-6 rounded-2xl border border-pink-100 shadow-md hover:shadow-xl transition-all space-y-4 relative">
-                    <span class="absolute -top-3 right-4 bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow">🔥 TikTok Viral #1</span>
-                    <div class="text-4xl">☀️</div>
-                    <div>
-                        <span class="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-md">UV Koruma</span>
-                        <h3 class="font-black text-lg text-stone-800 mt-2">Anthelios UVMune 400</h3>
-                        <p class="text-xs text-stone-500 mt-1 leading-relaxed">Parlama yapmayan, makyaj altında harikalar yaratan dermatolojik güneş kremi.</p>
-                    </div>
-                    <div class="border-t border-pink-100 pt-3 flex justify-between items-center text-xs">
-                        <span class="font-bold text-purple-600">Dermatolog Onaylı</span>
-                        <button onclick="quickAnalyze('3337875543248')" class="bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-xl font-bold">İncele ✨</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- Viral Ürün 3 -->
+<div class="card-sparkle p-6 rounded-2xl border border-pink-100 shadow-md hover:shadow-xl transition-all space-y-4 relative">
+<span class="absolute -top-3 right-4 bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[11px] font-black px-3 py-1 rounded-full shadow">🔥 TikTok Viral #1</span>
+<div class="text-4xl">☀️</div>
+<div>
+<span class="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-md">UV Koruma</span>
+<h3 class="font-black text-lg text-stone-800 mt-2">Anthelios UVMune 400</h3>
+<p class="text-xs text-stone-500 mt-1 leading-relaxed">Parlama yapmayan, makyaj altında harikalar yaratan dermatolojik güneş kremi.</p>
+</div>
+<div class="border-t border-pink-100 pt-3 flex justify-between items-center text-xs">
+<span class="font-bold text-purple-600">Dermatolog Onaylı</span>
+<button onclick="quickAnalyze('3337875543248')" class="bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-xl font-bold">İncele ✨</button>
+</div>
+</div>
+</div>
+</section>
 
-        <!-- 2. BARKOD TARAMA SEKMESİ -->
-        <section id="tab-scanner" class="tab-content space-y-6">
-            <div class="max-w-xl mx-auto bg-white p-6 rounded-3xl border border-pink-100 shadow-lg space-y-4 no-print">
-                <h2 class="font-black text-xl text-stone-800">📸 Barkod Sorgulama & Risk Analizi</h2>
-                <p class="text-xs text-stone-500">Open Beauty Facts üzerinden ürün barkodunu girin, anında duyarlılık skorunu çıkaralım.</p>
-                <div class="flex gap-2">
-                    <input type="text" id="barcode-input" placeholder="Barkod girin (Örn: 3337875543248)" class="flex-1 px-4 py-3 border border-pink-200 rounded-2xl text-xs focus:ring-2 focus:ring-pink-400 outline-none">
-                    <button onclick="fetchProductData()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-3 rounded-2xl font-bold text-xs hover:shadow-lg transition-all">Sorgula ✨</button>
-                </div>
-            </div>
+<!-- 2. BARKOD TARAMA SEKMESİ -->
+<section id="tab-scanner" class="tab-content space-y-6">
+<div class="max-w-xl mx-auto bg-white p-6 rounded-3xl border border-pink-100 shadow-lg space-y-4 no-print">
+<h2 class="font-black text-xl text-stone-800">📸 Barkod Sorgulama & Risk Analizi</h2>
+<p class="text-xs text-stone-500">Open Beauty Facts üzerinden ürün barkodunu girin, anında duyarlılık skorunu çıkaralım.</p>
+<div class="flex gap-2">
+<input type="text" id="barcode-input" placeholder="Barkod girin (Örn: 3337875543248)" class="flex-1 px-4 py-3 border border-pink-200 rounded-2xl text-xs focus:ring-2 focus:ring-pink-400 outline-none">
+<button onclick="fetchProductData()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-3 rounded-2xl font-bold text-xs hover:shadow-lg transition-all">Sorgula ✨</button>
+</div>
+</div>
 
-            <!-- Sonuç Kartı -->
-            <div id="product-result" class="max-w-xl mx-auto hidden bg-white p-6 rounded-3xl border border-pink-100 shadow-xl space-y-4 print-area">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 id="product-title" class="font-black text-xl text-pink-900"></h3>
-                        <p id="product-brand" class="text-xs font-bold text-pink-400 mt-1"></p>
-                    </div>
-                    <button id="fav-toggle-btn" onclick="toggleFavoriteCurrent()" class="no-print px-4 py-2 rounded-xl text-xs font-bold border border-pink-200 transition-all">⭐ Favorilere Ekle</button>
-                </div>
+<!-- Sonuç Kartı -->
+<div id="product-result" class="max-w-xl mx-auto hidden bg-white p-6 rounded-3xl border border-pink-100 shadow-xl space-y-4 print-area">
+<div class="flex justify-between items-start">
+<div>
+<h3 id="product-title" class="font-black text-xl text-pink-900"></h3>
+<p id="product-brand" class="text-xs font-bold text-pink-400 mt-1"></p>
+</div>
+<button id="fav-toggle-btn" onclick="toggleFavoriteCurrent()" class="no-print px-4 py-2 rounded-xl text-xs font-bold border border-pink-200 transition-all">⭐ Favorilere Ekle</button>
+</div>
 
-                <!-- ALERJİ VE CİLT TİPİ UYGUNLUK KARTLARI -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="bg-pink-50/50 p-4 rounded-2xl border border-pink-100 space-y-2">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-pink-600">📊 Tahmini Alerji Riski:</span>
-                        <div class="flex items-center gap-2">
-                            <span id="risk-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg"></span>
-                            <span id="risk-score-desc" class="text-xs font-bold text-stone-600"></span>
-                        </div>
-                    </div>
-                    <div class="bg-purple-50/50 p-4 rounded-2xl border border-purple-100 space-y-2">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-purple-600">👤 Cilt Tipi Uyum Skoru:</span>
-                        <div class="flex items-center gap-2">
-                            <span id="match-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800"></span>
-                            <span id="match-score-desc" class="text-xs font-bold text-stone-600"></span>
-                        </div>
-                    </div>
-                </div>
+<!-- ALERJİ VE CİLT TİPİ UYGUNLUK KARTLARI -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div class="bg-pink-50/50 p-4 rounded-2xl border border-pink-100 space-y-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-pink-600">📊 Tahmini Alerji Riski:</span>
+<div class="flex items-center gap-2">
+<span id="risk-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg"></span>
+<span id="risk-score-desc" class="text-xs font-bold text-stone-600"></span>
+</div>
+</div>
+<div class="bg-purple-50/50 p-4 rounded-2xl border border-purple-100 space-y-2">
+<span class="text-[10px] font-bold uppercase tracking-wider text-purple-600">👤 Cilt Tipi Uyum Skoru:</span>
+<div class="flex items-center gap-2">
+<span id="match-score-percent" class="text-lg font-black px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800"></span>
+<span id="match-score-desc" class="text-xs font-bold text-stone-600"></span>
+</div>
+</div>
+</div>
 
-                <!-- İlerleme Çubuğu -->
-                <div class="w-full bg-stone-100 rounded-full h-3 overflow-hidden">
-                    <div id="risk-progress-bar" class="h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
-                </div>
+<!-- İlerleme Çubuğu -->
+<div class="w-full bg-stone-100 rounded-full h-3 overflow-hidden">
+<div id="risk-progress-bar" class="h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+</div>
 
-                <!-- Alerjen Detayları -->
-                <div class="space-y-2">
-                    <h4 class="text-[10px] font-bold uppercase tracking-wider text-stone-400">🧪 İçerik Analiz Etiketleri:</h4>
-                    <div id="allergen-tags" class="flex flex-wrap gap-2"></div>
-                </div>
+<!-- Alerjen Detayları -->
+<div class="space-y-2">
+<h4 class="text-[10px] font-bold uppercase tracking-wider text-stone-400">🧪 İçerik Analiz Etiketleri:</h4>
+<div id="allergen-tags" class="flex flex-wrap gap-2"></div>
+</div>
 
-                <div class="border-t border-pink-100 pt-3">
-                    <h4 class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Tam İçindekiler (INCI List):</h4>
-                    <p id="product-ingredients" class="text-xs text-stone-600 mt-1 leading-relaxed"></p>
-                </div>
-            </div>
-        </section>
+<div class="border-t border-pink-100 pt-3">
+<h4 class="text-[10px] font-bold uppercase tracking-wider text-stone-400">Tam İçindekiler (INCI List):</h4>
+<p id="product-ingredients" class="text-xs text-stone-600 mt-1 leading-relaxed"></p>
+</div>
+</div>
+</section>
 
-        <!-- 3. İSİMLE ARAMA SEKMESİ (YENİ EKLENDİ) -->
-        <section id="tab-search" class="tab-content space-y-6">
-            <div class="max-w-2xl mx-auto bg-white p-6 rounded-3xl border border-pink-100 shadow-lg space-y-4">
-                <h2 class="font-black text-xl text-stone-800">🔍 Ürün İsmi Veya İçerik Arama</h2>
-                <p class="text-xs text-stone-500">Aradığınız ürünün adını (Örn: Serum, Krem, Tonik) yazarak Open Beauty Facts veritabanında arayın.</p>
-                <div class="flex gap-2">
-                    <input type="text" id="name-search-input" placeholder="Ürün adı yazın..." class="flex-1 px-4 py-3 border border-pink-200 rounded-2xl text-xs focus:ring-2 focus:ring-pink-400 outline-none">
-                    <button onclick="searchProductByName()" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-3 rounded-2xl font-bold text-xs hover:shadow-lg transition-all">Ara ✨</button>
-                </div>
-            </div>
+<!-- 3. İSİMLE ARAMA SEKMESİ (YENİ EKLENDİ) -->
+<section id="tab-search" class="tab-content space-y-6">
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-3xl border border-pink-100 shadow-lg space-y-4">
+<h2 class="font-black text-xl text-stone-800">🔍 Ürün İsmi Veya İçerik Arama</h2>
+<p class="text-xs text-stone-500">Aradığınız ürünün adını (Örn: Serum, Krem, Tonik) yazarak Open Beauty Facts veritabanında arayın.</p>
+<div class="flex gap-2">
+<input type="text" id="name-search-input" placeholder="Ürün adı yazın..." class="flex-1 px-4 py-3 border border-pink-200 rounded-2xl text-xs focus:ring-2 focus:ring-pink-400 outline-none">
+<button onclick="searchProductByName()" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-3 rounded-2xl font-bold text-xs hover:shadow-lg transition-all">Ara ✨</button>
+</div>
+</div>
 
-            <!-- Arama Sonuçları Listesi -->
-            <div id="search-results-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto"></div>
-        </section>
+<!-- Arama Sonuçları Listesi -->
+<div id="search-results-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto"></div>
+</section>
 
-        <!-- 4. KULLANICI PROFİLİ VE KOLEKSİYONLAR SEKMESİ (YENİ EKLENDİ) -->
-        <section id="tab-profile" class="tab-content space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Profil Kartı (Fotoğraflı) -->
-                <div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-md text-center space-y-4">
-                    <div class="relative w-24 h-24 mx-auto">
-                        <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-24 h-24 rounded-full object-cover border-4 border-pink-200 shadow-md">
-                        <label for="img-upload" class="absolute bottom-0 right-0 bg-pink-500 text-white p-1.5 rounded-full text-xs cursor-pointer shadow hover:bg-pink-600">📷</label>
-                        <input type="file" id="img-upload" accept="image/*" onchange="loadProfileImage(event)" class="hidden">
-                    </div>
-                    <div>
-                        <h3 id="user-name-display" class="font-black text-lg text-stone-800">Güzellik Tutkunu</h3>
-                        <p class="text-xs text-pink-500 font-semibold">Cilt Bakım Bloggerı</p>
-                    </div>
-                    <div class="pt-2 border-t border-pink-100 flex justify-around text-xs font-bold text-stone-600">
-                        <div>
-                            <span id="stat-collections" class="block text-base font-black text-pink-600">2</span> Koleksiyon
-                        </div>
-                        <div>
-                            <span id="stat-favs" class="block text-base font-black text-purple-600">0</span> Favori
-                        </div>
-                    </div>
-                </div>
+<!-- 4. KULLANICI PROFİLİ VE KOLEKSİYONLAR SEKMESİ (YENİ EKLENDİ) -->
+<section id="tab-profile" class="tab-content space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Profil Kartı (Fotoğraflı) -->
+<div class="bg-white p-6 rounded-3xl border border-pink-100 shadow-md text-center space-y-4">
+<div class="relative w-24 h-24 mx-auto">
+<img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-24 h-24 rounded-full object-cover border-4 border-pink-200 shadow-md">
+<label for="img-upload" class="absolute bottom-0 right-0 bg-pink-500 text-white p-1.5 rounded-full text-xs cursor-pointer shadow hover:bg-pink-600">📷</label>
+<input type="file" id="img-upload" accept="image/*" onchange="loadProfileImage(event)" class="hidden">
+</div>
+<div>
+<h3 id="user-name-display" class="font-black text-lg text-stone-800">Güzellik Tutkunu</h3>
+<p class="text-xs text-pink-500 font-semibold">Cilt Bakım Bloggerı</p>
+</div>
+<div class="pt-2 border-t border-pink-100 flex justify-around text-xs font-bold text-stone-600">
+<div>
+<span id="stat-collections" class="block text-base font-black text-pink-600">2</span> Koleksiyon
+</div>
+<div>
+<span id="stat-favs" class="block text-base font-black text-purple-600">0</span> Favori
+</div>
+</div>
+</div>
 
-                <!-- Koleksiyon Oluşturma Modülü -->
-                <div class="md:col-span-2 bg-white p-6 rounded-3xl border border-pink-100 shadow-md space-y-6">
-                    <div class="flex justify-between items-center border-b border-pink-100 pb-3">
-                        <h3 class="font-black text-lg text-stone-800">✨ Özel Koleksiyonlarım</h3>
-                        <button onclick="createNewCollection()" class="bg-pink-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-pink-600">+ Yeni Koleksiyon Ekle</button>
-                    </div>
+<!-- Koleksiyon Oluşturma Modülü -->
+<div class="md:col-span-2 bg-white p-6 rounded-3xl border border-pink-100 shadow-md space-y-6">
+<div class="flex justify-between items-center border-b border-pink-100 pb-3">
+<h3 class="font-black text-lg text-stone-800">✨ Özel Koleksiyonlarım</h3>
+<button onclick="createNewCollection()" class="bg-pink-500 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-pink-600">+ Yeni Koleksiyon Ekle</button>
+</div>
 
-                    <div id="collections-container" class="space-y-4">
-                        <!-- Otomatik Koleksiyonlar Buraya Gelecek -->
-                    </div>
-                </div>
-            </div>
-        </section>
+<div id="collections-container" class="space-y-4">
+<!-- Otomatik Koleksiyonlar Buraya Gelecek -->
+</div>
+</div>
+</div>
+</section>
 
-        <!-- 5. SABAH / AKŞAM RUTIN REHBERI -->
-        <section id="tab-compare" class="tab-content space-y-6 print-area">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-black text-stone-800">⚖️ Sabah ve Akşam Rutini Rehberi</h2>
-                <button onclick="window.print()" class="no-print bg-stone-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition-all flex items-center gap-2 shadow">
-                    🖨️ Rutin Kartımı Yazdır / PDF İndir
-                </button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-amber-50/80 border border-amber-200 p-6 rounded-3xl space-y-2">
-                    <h3 class="font-black text-amber-900 text-lg">☀️ Sabah Rutini</h3>
-                    <p class="text-xs text-amber-800">C Vitamini, Güneş Kremi, Hiyalüronik Asit.</p>
-                    <p class="text-[11px] text-amber-700">Gündüz antioksidan koruması ve UV koruması ön plandadır.</p>
-                </div>
-                <div class="bg-purple-50/80 border border-purple-200 p-6 rounded-3xl space-y-2">
-                    <h3 class="font-black text-purple-900 text-lg">🌙 Akşam Rutini</h3>
-                    <p class="text-xs text-purple-800">Retinol, Glikolik Asit (AHA), BHA, Peeling İçerikleri.</p>
-                    <p class="text-[11px] text-purple-700">Hücre yenileyici asitler güneşe hassasiyet oluşturduğu için akşam kullanılır.</p>
-                </div>
-            </div>
-        </section>
+<!-- 5. SABAH / AKŞAM RUTIN REHBERI -->
+<section id="tab-compare" class="tab-content space-y-6 print-area">
+<div class="flex justify-between items-center">
+<h2 class="text-xl font-black text-stone-800">⚖️ Sabah ve Akşam Rutini Rehberi</h2>
+<button onclick="window.print()" class="no-print bg-stone-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition-all flex items-center gap-2 shadow">
+🖨️ Rutin Kartımı Yazdır / PDF İndir
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-amber-50/80 border border-amber-200 p-6 rounded-3xl space-y-2">
+<h3 class="font-black text-amber-900 text-lg">☀️ Sabah Rutini</h3>
+<p class="text-xs text-amber-800">C Vitamini, Güneş Kremi, Hiyalüronik Asit.</p>
+<p class="text-[11px] text-amber-700">Gündüz antioksidan koruması ve UV koruması ön plandadır.</p>
+</div>
+<div class="bg-purple-50/80 border border-purple-200 p-6 rounded-3xl space-y-2">
+<h3 class="font-black text-purple-900 text-lg">🌙 Akşam Rutini</h3>
+<p class="text-xs text-purple-800">Retinol, Glikolik Asit (AHA), BHA, Peeling İçerikleri.</p>
+<p class="text-[11px] text-purple-700">Hücre yenileyici asitler güneşe hassasiyet oluşturduğu için akşam kullanılır.</p>
+</div>
+</div>
+</section>
 
-    </main>
+</main>
 
-    <!-- App Logic Scripts -->
-    <script>
-        let currentProduct = null;
-        let selectedSkinType = "oily";
-        let favorites = JSON.parse(localStorage.getItem('dermatlas_favs')) || [];
-        let collections = JSON.parse(localStorage.getItem('dermatlas_collections')) || [
-            { id: 'c1', name: '🌸 2026 Yaz Favorilerim', items: [] },
-            { id: 'c2', name: '💧 Leke Karşıtı Rutinim', items: [] }
-        ];
+<!-- App Logic Scripts -->
+<script>
+let currentProduct = null;
+let selectedSkinType = "oily";
+let favorites = JSON.parse(localStorage.getItem('dermatlas_favs')) || [];
+let collections = JSON.parse(localStorage.getItem('dermatlas_collections')) || [
+{ id: 'c1', name: '🌸 2026 Yaz Favorilerim', items: [] },
+{ id: 'c2', name: '💧 Leke Karşıtı Rutinim', items: [] }
+];
 
-        document.addEventListener("DOMContentLoaded", () => {
-            updateDashboardBadges();
-            renderCollections();
-            loadSavedProfileImage();
-        });
+document.addEventListener("DOMContentLoaded", () => {
+updateDashboardBadges();
+renderCollections();
+loadSavedProfileImage();
+});
 
-        // Sekme Değiştirme
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('bg-pink-500', 'text-white', 'shadow-md');
-                el.classList.add('text-stone-600', 'hover:bg-pink-50');
-            });
+// Sekme Değiştirme
+function switchTab(tabName) {
+document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(el => {
+el.classList.remove('bg-pink-500', 'text-white', 'shadow-md');
+el.classList.add('text-stone-600', 'hover:bg-pink-50');
+});
 
-            document.getElementById('tab-' + tabName).classList.add('active');
-            const activeBtn = document.getElementById('btn-' + tabName);
-            if(activeBtn) {
-                activeBtn.classList.remove('text-stone-600', 'hover:bg-pink-50');
-                activeBtn.classList.add('bg-pink-500', 'text-white', 'shadow-md');
-            }
-        }
+document.getElementById('tab-' + tabName).classList.add('active');
+const activeBtn = document.getElementById('btn-' + tabName);
+if(activeBtn) {
+activeBtn.classList.remove('text-stone-600', 'hover:bg-pink-50');
+activeBtn.classList.add('bg-pink-500', 'text-white', 'shadow-md');
+}
+}
 
-        function changeSkinType() {
-            selectedSkinType = document.getElementById('skin-type-select').value;
-            if (currentProduct) {
-                const analysis = calculateRiskAndMatch(currentProduct.ingredients.toLowerCase());
-                renderRiskUI(analysis);
-            }
-        }
+function changeSkinType() {
+selectedSkinType = document.getElementById('skin-type-select').value;
+if (currentProduct) {
+const analysis = calculateRiskAndMatch(currentProduct.ingredients.toLowerCase());
+renderRiskUI(analysis);
+}
+}
 
-        // Barkod Tarama
-        async function fetchProductData() {
-            const barcode = document.getElementById('barcode-input').value.trim();
-            if (!barcode) return alert("Lütfen bir barkod numarası girin.");
-            quickAnalyze(barcode);
-        }
+// Barkod Tarama
+async function fetchProductData() {
+const barcode = document.getElementById('barcode-input').value.trim();
+if (!barcode) return alert("Lütfen bir barkod numarası girin.");
+quickAnalyze(barcode);
+}
 
-        async function quickAnalyze(barcode) {
-            switchTab('scanner');
-            try {
-                const response = await fetch(`https://world.openbeautyfacts.org/api/v2/product/${barcode}.json`);
-                const data = await response.json();
+async function quickAnalyze(barcode) {
+switchTab('scanner');
+try {
+const response = await fetch(`https://world.openbeautyfacts.org/api/v2/product/${barcode}.json`);
+const data = await response.json();
 
-                if (data.status === 1 && data.product) {
-                    const ingredients = data.product.ingredients_text || "";
-                    const name = data.product.product_name || "İsimsiz Ürün";
-                    const brand = data.product.brands || "Bilinmiyor";
-                    processAndDisplayProduct(barcode, name, brand, ingredients);
-                } else {
-                    alert("Ürün Open Beauty Facts veritabanında bulunamadı.");
-                }
-            } catch (error) {
-                alert("Veri çekilirken bir hata oluştu.");
-            }
-        }
+if (data.status === 1 && data.product) {
+const ingredients = data.product.ingredients_text || "";
+const name = data.product.product_name || "İsimsiz Ürün";
+const brand = data.product.brands || "Bilinmiyor";
+processAndDisplayProduct(barcode, name, brand, ingredients);
+} else {
+alert("Ürün Open Beauty Facts veritabanında bulunamadı.");
+}
+} catch (error) {
+alert("Veri çekilirken bir hata oluştu.");
+}
+}
 
-        // İsme Göre Ürün Arama Modülü
-        async function searchProductByName() {
-            const query = document.getElementById('name-search-input').value.trim();
-            const listContainer = document.getElementById('search-results-list');
-            if (!query) return alert("Lütfen aranacak bir kelime girin.");
+// İsme Göre Ürün Arama Modülü
+async function searchProductByName() {
+const query = document.getElementById('name-search-input').value.trim();
+const listContainer = document.getElementById('search-results-list');
+if (!query) return alert("Lütfen aranacak bir kelime girin.");
 
-            listContainer.innerHTML = `<p class="text-xs text-pink-500 font-bold col-span-2 text-center py-4">Açık veritabanında aranıyor... ✨</p>`;
+listContainer.innerHTML = `<p class="text-xs text-pink-500 font-bold col-span-2 text-center py-4">Açık veritabanında aranıyor... ✨</p>`;
 
-            try {
-                const response = await fetch(`https://world.openbeautyfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1`);
-                const data = await response.json();
+try {
+const response = await fetch(`https://world.openbeautyfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1`);
+const data = await response.json();
 
-                if (data.products && data.products.length > 0) {
-                    listContainer.innerHTML = data.products.slice(0, 6).map(p => `
-                        <div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex justify-between items-center">
-                            <div>
-                                <h4 class="font-bold text-sm text-stone-800">${p.product_name || 'İsimsiz Ürün'}</h4>
-                                <p class="text-xs text-stone-400">${p.brands || 'Bilinmeyen Marka'}</p>
-                            </div>
-                            <button onclick="quickAnalyze('${p.code}')" class="bg-pink-100 text-pink-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-pink-200">Analiz Et ✨</button>
-                        </div>
-                    `).join('');
-                } else {
-                    listContainer.innerHTML = `<p class="text-xs text-stone-400 col-span-2 text-center py-4">Ürün bulunamadı.</p>`;
-                }
-            } catch (e) {
-                listContainer.innerHTML = `<p class="text-xs text-rose-500 col-span-2 text-center py-4">Arama hatası oluştu.</p>`;
-            }
-        }
+if (data.products && data.products.length > 0) {
+listContainer.innerHTML = data.products.slice(0, 6).map(p => `
+<div class="bg-white p-4 rounded-2xl border border-pink-100 shadow-sm flex justify-between items-center">
+<div>
+<h4 class="font-bold text-sm text-stone-800">${p.product_name || 'İsimsiz Ürün'}</h4>
+<p class="text-xs text-stone-400">${p.brands || 'Bilinmeyen Marka'}</p>
+</div>
+<button onclick="quickAnalyze('${p.code}')" class="bg-pink-100 text-pink-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-pink-200">Analiz Et ✨</button>
+</div>
+`).join('');
+} else {
+listContainer.innerHTML = `<p class="text-xs text-stone-400 col-span-2 text-center py-4">Ürün bulunamadı.</p>`;
+}
+} catch (e) {
+listContainer.innerHTML = `<p class="text-xs text-rose-500 col-span-2 text-center py-4">Arama hatası oluştu.</p>`;
+}
+}
 
-        function processAndDisplayProduct(barcode, name, brand, ingredients) {
-            const resultDiv = document.getElementById('product-result');
-            const riskAnalysis = calculateRiskAndMatch(ingredients.toLowerCase());
+function processAndDisplayProduct(barcode, name, brand, ingredients) {
+const resultDiv = document.getElementById('product-result');
+const riskAnalysis = calculateRiskAndMatch(ingredients.toLowerCase());
 
-            currentProduct = { barcode, name, brand, ingredients, riskPercent: riskAnalysis.percent };
+currentProduct = { barcode, name, brand, ingredients, riskPercent: riskAnalysis.percent };
 
-            document.getElementById('product-title').innerText = name;
-            document.getElementById('product-brand').innerText = "Marka: " + brand;
-            document.getElementById('product-ingredients').innerText = ingredients || "İçerik bilgisi bulunamadı.";
-            
-            renderRiskUI(riskAnalysis);
-            updateFavButtonState();
-            resultDiv.classList.remove('hidden');
-        }
+document.getElementById('product-title').innerText = name;
+document.getElementById('product-brand').innerText = "Marka: " + brand;
+document.getElementById('product-ingredients').innerText = ingredients || "İçerik bilgisi bulunamadı.";
 
-        function calculateRiskAndMatch(text) {
-            let riskPoints = 0;
-            let matchPoints = 85;
-            let tags = [];
+renderRiskUI(riskAnalysis);
+updateFavButtonState();
+resultDiv.classList.remove('hidden');
+}
 
-            if (text.includes("parfum") || text.includes("fragrance")) {
-                riskPoints += 30;
-                tags.push({ name: "⚠️ Parfüm İçerir", color: "bg-rose-100 text-rose-800" });
-            }
-            if (text.includes("alcohol denat") || text.includes("alcohol")) {
-                riskPoints += 25;
-                tags.push({ name: "⚠️ Kurutucu Alkol İçerir", color: "bg-amber-100 text-amber-800" });
-            }
-            if (text.includes("sulfate") || text.includes("sls")) {
-                riskPoints += 20;
-                tags.push({ name: "⚠️ Sülfat İçerir", color: "bg-purple-100 text-purple-800" });
-            }
+function calculateRiskAndMatch(text) {
+let riskPoints = 0;
+let matchPoints = 85;
+let tags = [];
 
-            if (selectedSkinType === "oily" && (text.includes("salicylic") || text.includes("niacinamide"))) matchPoints += 15;
-            if (selectedSkinType === "dry" && (text.includes("hyaluronic") || text.includes("glycerin"))) matchPoints += 15;
+if (text.includes("parfum") || text.includes("fragrance")) {
+riskPoints += 30;
+tags.push({ name: "⚠️ Parfüm İçerir", color: "bg-rose-100 text-rose-800" });
+}
+if (text.includes("alcohol denat") || text.includes("alcohol")) {
+riskPoints += 25;
+tags.push({ name: "⚠️ Kurutucu Alkol İçerir", color: "bg-amber-100 text-amber-800" });
+}
+if (text.includes("sulfate") || text.includes("sls")) {
+riskPoints += 20;
+tags.push({ name: "⚠️ Sülfat İçerir", color: "bg-purple-100 text-purple-800" });
+}
 
-            const percent = Math.min(riskPoints, 100);
-            const matchPercent = Math.min(matchPoints, 100);
+if (selectedSkinType === "oily" && (text.includes("salicylic") || text.includes("niacinamide"))) matchPoints += 15;
+if (selectedSkinType === "dry" && (text.includes("hyaluronic") || text.includes("glycerin"))) matchPoints += 15;
 
-            return { percent, level: percent >= 50 ? "Yüksek Risk" : "Düşük Risk", matchPercent, matchDesc: "Uyumlu", tags };
-        }
+const percent = Math.min(riskPoints, 100);
+const matchPercent = Math.min(matchPoints, 100);
 
-        function renderRiskUI(analysis) {
-            const percentEl = document.getElementById('risk-score-percent');
-            const barEl = document.getElementById('risk-progress-bar');
-            const descEl = document.getElementById('risk-score-desc');
-            const matchPercentEl = document.getElementById('match-score-percent');
-            const matchDescEl = document.getElementById('match-score-desc');
-            const tagsDiv = document.getElementById('allergen-tags');
+return { percent, level: percent >= 50 ? "Yüksek Risk" : "Düşük Risk", matchPercent, matchDesc: "Uyumlu", tags };
+}
 
-            percentEl.innerText = "%" + analysis.percent;
-            barEl.style.width = analysis.percent + "%";
-            descEl.innerText = analysis.level;
-            matchPercentEl.innerText = "%" + analysis.matchPercent;
-            matchDescEl.innerText = analysis.matchDesc;
+function renderRiskUI(analysis) {
+const percentEl = document.getElementById('risk-score-percent');
+const barEl = document.getElementById('risk-progress-bar');
+const descEl = document.getElementById('risk-score-desc');
+const matchPercentEl = document.getElementById('match-score-percent');
+const matchDescEl = document.getElementById('match-score-desc');
+const tagsDiv = document.getElementById('allergen-tags');
 
-            percentEl.className = analysis.percent >= 50 ? "text-lg font-black px-2.5 py-0.5 rounded-lg bg-rose-200 text-rose-900" : "text-lg font-black px-2.5 py-0.5 rounded-lg bg-emerald-200 text-emerald-900";
-            barEl.className = analysis.percent >= 50 ? "h-3 rounded-full bg-rose-500 transition-all duration-500" : "h-3 rounded-full bg-emerald-500 transition-all duration-500";
+percentEl.innerText = "%" + analysis.percent;
+barEl.style.width = analysis.percent + "%";
+descEl.innerText = analysis.level;
+matchPercentEl.innerText = "%" + analysis.matchPercent;
+matchDescEl.innerText = analysis.matchDesc;
 
-            tagsDiv.innerHTML = analysis.tags.length ? analysis.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold ${t.color}">${t.name}</span>`).join('') : `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">✓ İrritan Madde Bulunamadı</span>`;
-        }
+percentEl.className = analysis.percent >= 50 ? "text-lg font-black px-2.5 py-0.5 rounded-lg bg-rose-200 text-rose-900" : "text-lg font-black px-2.5 py-0.5 rounded-lg bg-emerald-200 text-emerald-900";
+barEl.className = analysis.percent >= 50 ? "h-3 rounded-full bg-rose-500 transition-all duration-500" : "h-3 rounded-full bg-emerald-500 transition-all duration-500";
 
-        // PROFiL & FOTOĞRAF & KOLEKSİYON YÖNETİMİ
-        function loadProfileImage(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById('profile-img');
-                output.src = reader.result;
-                localStorage.setItem('dermatlas_profile_img', reader.result);
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
+tagsDiv.innerHTML = analysis.tags.length ? analysis.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold ${t.color}">${t.name}</span>`).join('') : `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">✓ İrritan Madde Bulunamadı</span>`;
+}
 
-        function loadSavedProfileImage() {
-            const savedImg = localStorage.getItem('dermatlas_profile_img');
-            if (savedImg) document.getElementById('profile-img').src = savedImg;
-        }
+// PROFiL & FOTOĞRAF & KOLEKSİYON YÖNETİMİ
+function loadProfileImage(event) {
+const reader = new FileReader();
+reader.onload = function() {
+const output = document.getElementById('profile-img');
+output.src = reader.result;
+localStorage.setItem('dermatlas_profile_img', reader.result);
+};
+reader.readAsDataURL(event.target.files[0]);
+}
 
-        function createNewCollection() {
-            const name = prompt("Koleksiyon adı girin:", "💖 Favori Nemlendiricilerim");
-            if (!name) return;
-            collections.push({ id: 'c_' + Date.now(), name, items: [] });
-            localStorage.setItem('dermatlas_collections', JSON.stringify(collections));
-            renderCollections();
-        }
+function loadSavedProfileImage() {
+const savedImg = localStorage.getItem('dermatlas_profile_img');
+if (savedImg) document.getElementById('profile-img').src = savedImg;
+}
 
-        function renderCollections() {
-            const container = document.getElementById('collections-container');
-            document.getElementById('stat-collections').innerText = collections.length;
+function createNewCollection() {
+const name = prompt("Koleksiyon adı girin:", "💖 Favori Nemlendiricilerim");
+if (!name) return;
+collections.push({ id: 'c_' + Date.now(), name, items: [] });
+localStorage.setItem('dermatlas_collections', JSON.stringify(collections));
+renderCollections();
+}
 
-            container.innerHTML = collections.map(c => `
-                <div class="bg-pink-50/40 p-4 rounded-2xl border border-pink-100 space-y-2">
-                    <h4 class="font-bold text-sm text-pink-900">${c.name}</h4>
-                    <div class="text-xs text-stone-500">${c.items.length ? c.items.map(i => i.name).join(', ') : 'Henüz ürün eklenmedi.'}</div>
-                </div>
-            `).join('');
-        }
+function renderCollections() {
+const container = document.getElementById('collections-container');
+document.getElementById('stat-collections').innerText = collections.length;
 
-        // FAVORİ KONTROLÜ
-        function toggleFavoriteCurrent() {
-            if (!currentProduct) return;
-            const idx = favorites.findIndex(f => f.barcode === currentProduct.barcode);
-            if (idx > -1) favorites.splice(idx, 1);
-            else favorites.push(currentProduct);
-            localStorage.setItem('dermatlas_favs', JSON.stringify(favorites));
-            updateFavButtonState();
-            updateDashboardBadges();
-        }
+container.innerHTML = collections.map(c => `
+<div class="bg-pink-50/40 p-4 rounded-2xl border border-pink-100 space-y-2">
+<h4 class="font-bold text-sm text-pink-900">${c.name}</h4>
+<div class="text-xs text-stone-500">${c.items.length ? c.items.map(i => i.name).join(', ') : 'Henüz ürün eklenmedi.'}</div>
+</div>
+`).join('');
+}
 
-        function updateFavButtonState() {
-            const btn = document.getElementById('fav-toggle-btn');
-            const isFav = favorites.some(f => f.barcode === currentProduct.barcode);
-            btn.innerText = isFav ? "★ Favorilerden Çıkar" : "⭐ Favorilere Ekle";
-            btn.className = isFav ? "no-print px-4 py-2 rounded-xl text-xs font-bold bg-pink-100 text-pink-800 border border-pink-300" : "no-print px-4 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-pink-200 hover:bg-pink-50";
-        }
+// FAVORİ KONTROLÜ
+function toggleFavoriteCurrent() {
+if (!currentProduct) return;
+const idx = favorites.findIndex(f => f.barcode === currentProduct.barcode);
+if (idx > -1) favorites.splice(idx, 1);
+else favorites.push(currentProduct);
+localStorage.setItem('dermatlas_favs', JSON.stringify(favorites));
+updateFavButtonState();
+updateDashboardBadges();
+}
 
-        function updateDashboardBadges() {
-            document.getElementById('fav-badge-count').innerText = favorites.length;
-            document.getElementById('stat-favs').innerText = favorites.length;
-            document.getElementById('risk-badge-count').innerText = favorites.filter(f => f.riskPercent >= 50).length;
-        }
-    </script>
+function updateFavButtonState() {
+const btn = document.getElementById('fav-toggle-btn');
+const isFav = favorites.some(f => f.barcode === currentProduct.barcode);
+btn.innerText = isFav ? "★ Favorilerden Çıkar" : "⭐ Favorilere Ekle";
+btn.className = isFav ? "no-print px-4 py-2 rounded-xl text-xs font-bold bg-pink-100 text-pink-800 border border-pink-300" : "no-print px-4 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-pink-200 hover:bg-pink-50";
+}
+
+function updateDashboardBadges() {
+document.getElementById('fav-badge-count').innerText = favorites.length;
+document.getElementById('stat-favs').innerText = favorites.length;
+document.getElementById('risk-badge-count').innerText = favorites.filter(f => f.riskPercent >= 50).length;
+}
+</script>
 </body>
 </html>
+
