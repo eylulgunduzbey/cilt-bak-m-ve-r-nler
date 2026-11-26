@@ -35,11 +35,12 @@
                 </div>
             </div>
             <nav class="flex flex-wrap justify-center gap-2 text-xs font-bold">
-                <button onclick="switchTab('explore')" class="tab-btn px-4 py-2.5 rounded-full bg-pink-500 text-white shadow-md shadow-pink-200 transition-all" id="btn-explore">🔥 Viral Trendler</button>
-                <button onclick="switchTab('scanner')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-scanner">📸 Barkod & Analiz</button>
-                <button onclick="switchTab('search')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-search">🔍 İsimle Arama</button>
-                <button onclick="switchTab('profile')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-profile">👤 Profilim & Koleksiyonlar</button>
-                <button onclick="switchTab('compare')" class="tab-btn px-4 py-2.5 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-compare">⚖️ Rutin Rehberi</button>
+                <button onclick="switchTab('explore')" class="tab-btn px-3.5 py-2 rounded-full bg-pink-500 text-white shadow-md shadow-pink-200 transition-all" id="btn-explore">🔥 Viral Trendler</button>
+                <button onclick="switchTab('scanner')" class="tab-btn px-3.5 py-2 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-scanner">📸 Barkod & Analiz</button>
+                <button onclick="switchTab('search')" class="tab-btn px-3.5 py-2 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-search">🔍 İsimle Arama</button>
+                <button onclick="switchTab('risk-list')" class="tab-btn px-3.5 py-2 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-risk-list">⚠️ Riskli Ürünler</button>
+                <button onclick="switchTab('profile')" class="tab-btn px-3.5 py-2 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-profile">👤 Profil & Koleksiyonlar</button>
+                <button onclick="switchTab('about')" class="tab-btn px-3.5 py-2 rounded-full hover:bg-pink-50 text-stone-600 transition-all" id="btn-about">ℹ️ Hakkında</button>
             </nav>
         </div>
     </header>
@@ -57,17 +58,17 @@
                     <option value="normal">Normal / Karma Cilt</option>
                 </select>
             </div>
-            <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white p-4 rounded-2xl shadow-lg shadow-pink-200 flex justify-between items-center">
+            <div class="bg-gradient-to-r from-pink-500 to-rose-400 text-white p-4 rounded-2xl shadow-lg shadow-pink-200 flex justify-between items-center cursor-pointer" onclick="switchTab('profile')">
                 <div>
                     <h3 class="font-bold text-base">💖 Favori Ürünlerim</h3>
                     <p class="text-pink-100 text-xs">Kaydedilen süslü favoriler</p>
                 </div>
                 <span id="fav-badge-count" class="text-2xl font-black bg-white text-pink-600 px-3.5 py-1 rounded-2xl shadow">0</span>
             </div>
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-2xl shadow-lg shadow-purple-200 flex justify-between items-center">
+            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-2xl shadow-lg shadow-purple-200 flex justify-between items-center cursor-pointer" onclick="switchTab('risk-list')">
                 <div>
                     <h3 class="font-bold text-base">⚠️ Yüksek Riskli Ürünler</h3>
-                    <p class="text-purple-100 text-xs">Alerjen/İrritan içerenler</p>
+                    <p class="text-purple-100 text-xs">Kara listedeki irritan ürünler</p>
                 </div>
                 <span id="risk-badge-count" class="text-2xl font-black bg-white text-purple-700 px-3.5 py-1 rounded-2xl shadow">0</span>
             </div>
@@ -78,7 +79,7 @@
             <div class="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white rounded-3xl p-8 text-center space-y-3 shadow-xl relative overflow-hidden">
                 <span class="inline-block bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">✨ Social Beauty Lab</span>
                 <h2 class="text-3xl md:text-4xl font-black">En Çok Satanlar & Influencer Favorileri</h2>
-                <p class="text-pink-100 max-w-xl mx-auto text-sm">Sosyal medyada viral olan, güzellik ikonlarının önerdiği ürünler!</p>
+                <p class="text-pink-100 max-w-xl mx-auto text-sm">Sosyal medyada viral olan, güzellik ikonlarının önerdiği ve Open Beauty Facts ile onaylanmış ürünler!</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -130,7 +131,6 @@
         <section id="tab-scanner" class="tab-content space-y-6">
             <div class="max-w-xl mx-auto bg-white p-6 rounded-3xl border border-pink-100 shadow-lg space-y-4 no-print">
                 <h2 class="font-black text-xl text-stone-800">📸 Barkod Sorgulama & Risk Analizi</h2>
-                <p class="text-xs text-stone-500">Open Beauty Facts üzerinden ürün barkodunu girin.</p>
                 <div class="flex gap-2">
                     <input type="text" id="barcode-input" placeholder="Barkod girin (Örn: 3337875543248)" class="flex-1 px-4 py-3 border border-pink-200 rounded-2xl text-xs focus:ring-2 focus:ring-pink-400 outline-none">
                     <button onclick="fetchProductData()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-3 rounded-2xl font-bold text-xs hover:shadow-lg transition-all">Sorgula ✨</button>
@@ -144,9 +144,9 @@
                         <h3 id="product-title" class="font-black text-xl text-pink-900"></h3>
                         <p id="product-brand" class="text-xs font-bold text-pink-400 mt-1"></p>
                     </div>
-                    <!-- KOLEKSİYONA EKLENEN VE FAVORİ BUTONLARI -->
-                    <div class="flex gap-2 no-print">
+                    <div class="flex flex-wrap gap-2 no-print">
                         <button id="fav-toggle-btn" onclick="toggleFavoriteCurrent()" class="px-3 py-2 rounded-xl text-xs font-bold border border-pink-200 transition-all">⭐ Favorilere Ekle</button>
+                        <button id="risk-toggle-btn" onclick="toggleRiskCurrent()" class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-all">⚠️ Kara Listeye Ekle</button>
                         <button onclick="addToCollectionPrompt()" class="px-3 py-2 rounded-xl text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-all">📂 Koleksiyona Ekle</button>
                     </div>
                 </div>
@@ -193,11 +193,24 @@
                     <button onclick="searchProductByName()" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-3 rounded-2xl font-bold text-xs hover:shadow-lg transition-all">Ara ✨</button>
                 </div>
             </div>
-
             <div id="search-results-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto"></div>
         </section>
 
-        <!-- 4. KULLANICI PROFİLİ VE KOLEKSİYONLAR SEKMESİ -->
+        <!-- 4. YÜKSEK RİSKLİ ÜRÜNLER SEKMESİ (YENİ MODÜL) -->
+        <section id="tab-risk-list" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-3xl border border-rose-100 shadow-md space-y-4">
+                <div class="flex justify-between items-center border-b border-rose-100 pb-3">
+                    <div>
+                        <h3 class="font-black text-lg text-rose-900">⚠️ Kara Listedeki Yüksek Riskli Ürünlerim</h3>
+                        <p class="text-xs text-stone-500">Cildinize alerji veya hassasiyet yapabilecek irrite edici ürünlerin listesi.</p>
+                    </div>
+                    <button onclick="clearRiskList()" class="text-xs text-rose-600 font-bold hover:underline">Listeyi Temizle</button>
+                </div>
+                <div id="risk-products-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- 5. KULLANICI PROFİLİ VE KOLEKSİYONLAR SEKMESİ -->
         <section id="tab-profile" class="tab-content space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Profil Kartı -->
@@ -212,26 +225,21 @@
                         <p class="text-xs text-pink-500 font-semibold">Cilt Bakım Bloggerı</p>
                     </div>
                     <div class="pt-2 border-t border-pink-100 flex justify-around text-xs font-bold text-stone-600">
-                        <div>
-                            <span id="stat-collections" class="block text-base font-black text-pink-600">0</span> Koleksiyon
-                        </div>
-                        <div>
-                            <span id="stat-favs" class="block text-base font-black text-purple-600">0</span> Favori
-                        </div>
+                        <div><span id="stat-collections" class="block text-base font-black text-pink-600">0</span> Koleksiyon</div>
+                        <div><span id="stat-favs" class="block text-base font-black text-purple-600">0</span> Favori</div>
                     </div>
                 </div>
 
-                <!-- Koleksiyon Oluşturma ve Öneri Al Modülü -->
+                <!-- Koleksiyon Oluşturma Modülü -->
                 <div class="md:col-span-2 bg-white p-6 rounded-3xl border border-pink-100 shadow-md space-y-6">
                     <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-3 gap-2">
                         <h3 class="font-black text-lg text-stone-800">✨ Özel Koleksiyonlarım</h3>
                         <div class="flex gap-2">
-                            <button onclick="getCollectionRecommendation()" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:shadow">💡 Koleksiyondan Öneri Al</button>
-                            <button onclick="createNewCollection()" class="bg-pink-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-pink-600">+ Yeni Koleksiyon Ekle</button>
+                            <button onclick="getCollectionRecommendation()" class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:shadow">💡 Rutin Önerisi Al</button>
+                            <button onclick="createNewCollection()" class="bg-pink-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-pink-600">+ Yeni Koleksiyon</button>
                         </div>
                     </div>
 
-                    <!-- Öneri Kutusu -->
                     <div id="recommendation-box" class="hidden bg-purple-50 border border-purple-200 p-4 rounded-2xl text-xs space-y-2 text-purple-900">
                         <h4 class="font-bold flex items-center gap-1">🤖 Akıllı Rutin Önerisi:</h4>
                         <p id="recommendation-text"></p>
@@ -242,22 +250,32 @@
             </div>
         </section>
 
-        <!-- 5. SABAH / AKŞAM RUTIN REHBERI -->
-        <section id="tab-compare" class="tab-content space-y-6 print-area">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-black text-stone-800">⚖️ Sabah ve Akşam Rutini Rehberi</h2>
-                <button onclick="window.print()" class="no-print bg-stone-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition-all flex items-center gap-2 shadow">
-                    🖨️ Rutin Kartımı Yazdır / PDF İndir
-                </button>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-amber-50/80 border border-amber-200 p-6 rounded-3xl space-y-2">
-                    <h3 class="font-black text-amber-900 text-lg">☀️ Sabah Rutini</h3>
-                    <p class="text-xs text-amber-800">C Vitamini, Güneş Kremi, Hiyalüronik Asit.</p>
+        <!-- 6. HAKKINDA SEKMESİ (YENİ MODÜL) -->
+        <section id="tab-about" class="tab-content space-y-6">
+            <div class="bg-white p-8 rounded-3xl border border-pink-100 shadow-xl space-y-6">
+                <div class="flex items-center gap-3 border-b border-pink-100 pb-4">
+                    <span class="text-4xl">ℹ️</span>
+                    <div>
+                        <h2 class="text-2xl font-black text-stone-800">DermAtlas Hakkında</h2>
+                        <p class="text-xs text-pink-500 font-bold uppercase tracking-widest">Social Beauty & Open Data INCI Analysis Engine</p>
+                    </div>
                 </div>
-                <div class="bg-purple-50/80 border border-purple-200 p-6 rounded-3xl space-y-2">
-                    <h3 class="font-black text-purple-900 text-lg">🌙 Akşam Rutini</h3>
-                    <p class="text-xs text-purple-800">Retinol, Glikolik Asit (AHA), BHA, Peeling İçerikleri.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-stone-600 leading-relaxed">
+                    <div class="bg-pink-50/50 p-5 rounded-2xl border border-pink-100 space-y-2">
+                        <h3 class="font-black text-sm text-pink-900">🎯 Projenin Amacı ve Özgün Değeri</h3>
+                        <p>DermAtlas, karmaşık kozmetik içerik listelerini (INCI) son kullanıcı için anlaşılır verilere dönüştüren akademik bir web uygulamasıdır. Alerjen tespiti, kişiselleştirilmiş cilt uyum skoru ve açık veri altyapısıyla güvenli bir güzellik rehberi sunar.</p>
+                    </div>
+
+                    <div class="bg-purple-50/50 p-5 rounded-2xl border border-purple-100 space-y-2">
+                        <h3 class="font-black text-sm text-purple-900">🔓 Açık Erişim Veri Kaynağı</h3>
+                        <p>Uygulamamız gücünü dünya genelinde milyonlarca kozmetik verisini barındıran açık erişimli <strong>Open Beauty Facts API</strong> veritabanından almaktadır. Ürün barkodları ve arama sorguları anlık işlenir.</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-pink-100 pt-4 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 gap-2">
+                    <span>🎓 Geliştirici: Eylül Gündüzbey (Hacettepe Üniversitesi - BBY)</span>
+                    <span>🚀 Versiyon 1.6 (Kasım 2026)</span>
                 </div>
             </div>
         </section>
@@ -269,6 +287,7 @@
         let currentProduct = null;
         let selectedSkinType = "oily";
         let favorites = JSON.parse(localStorage.getItem('dermatlas_favs')) || [];
+        let riskProducts = JSON.parse(localStorage.getItem('dermatlas_risk_list')) || [];
         let collections = JSON.parse(localStorage.getItem('dermatlas_collections')) || [
             { id: 'c1', name: '🌸 2026 Yaz Favorilerim', items: [] },
             { id: 'c2', name: '💧 Leke Karşıtı Rutinim', items: [] }
@@ -277,6 +296,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             updateDashboardBadges();
             renderCollections();
+            renderRiskProducts();
             loadSavedProfileImage();
         });
 
@@ -369,6 +389,7 @@
             
             renderRiskUI(riskAnalysis);
             updateFavButtonState();
+            updateRiskButtonState();
             resultDiv.classList.remove('hidden');
         }
 
@@ -408,7 +429,7 @@
                 }
                 if (text.includes("hyaluronic") || text.includes("glycerin") || text.includes("ceramide")) {
                     matchPoints += 25;
-                    tags.push({ name: "✓ Kuru Cildin Dostu (Nemlendirici)", color: "bg-teal-100 text-teal-800" });
+                    tags.push({ name: "✓ Kuru Cildin Dostu", color: "bg-teal-100 text-teal-800" });
                 }
             }
 
@@ -441,13 +462,53 @@
             tagsDiv.innerHTML = analysis.tags.length ? analysis.tags.map(t => `<span class="px-3 py-1 rounded-full text-xs font-semibold ${t.color}">${t.name}</span>`).join('') : `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">✓ Temiz İçerik</span>`;
         }
 
-        // KOLEKSİYONA ÜRÜN EKLEME MODÜLÜ
-        function addToCollectionPrompt() {
+        // KARA LİSTE / RISKLI ÜRÜNLER YÖNETİMİ
+        function toggleRiskCurrent() {
             if (!currentProduct) return;
-            if (collections.length === 0) {
-                alert("Henüz bir koleksiyonunuz yok. Önce Profil sekmesinden bir koleksiyon oluşturun.");
+            const idx = riskProducts.findIndex(r => r.barcode === currentProduct.barcode);
+            if (idx > -1) riskProducts.splice(idx, 1);
+            else riskProducts.push(currentProduct);
+            localStorage.setItem('dermatlas_risk_list', JSON.stringify(riskProducts));
+            updateRiskButtonState();
+            renderRiskProducts();
+            updateDashboardBadges();
+        }
+
+        function updateRiskButtonState() {
+            const btn = document.getElementById('risk-toggle-btn');
+            if (!btn || !currentProduct) return;
+            const isRisk = riskProducts.some(r => r.barcode === currentProduct.barcode);
+            btn.innerText = isRisk ? "✓ Kara Listeden Çıkar" : "⚠️ Kara Listeye Ekle";
+        }
+
+        function renderRiskProducts() {
+            const container = document.getElementById('risk-products-container');
+            if (!container) return;
+            if (riskProducts.length === 0) {
+                container.innerHTML = `<p class="text-xs text-stone-400 col-span-2">Kara listenize henüz yüksek riskli ürün eklemediniz.</p>`;
                 return;
             }
+            container.innerHTML = riskProducts.map(r => `
+                <div class="bg-rose-50/50 p-4 rounded-2xl border border-rose-100 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-sm text-rose-900">${r.name}</h4>
+                        <p class="text-xs text-rose-500 font-semibold">${r.brand}</p>
+                    </div>
+                    <button onclick="quickAnalyze('${r.barcode}')" class="bg-rose-100 text-rose-800 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-rose-200">İncele</button>
+                </div>
+            `).join('');
+        }
+
+        function clearRiskList() {
+            riskProducts = [];
+            localStorage.removeItem('dermatlas_risk_list');
+            renderRiskProducts();
+            updateDashboardBadges();
+        }
+
+        // KOLEKSİYON İŞLEMLERİ
+        function addToCollectionPrompt() {
+            if (!currentProduct) return;
             let collectionNames = collections.map((c, idx) => `${idx + 1}. ${c.name}`).join('\n');
             let choice = prompt(`Ürünü eklemek istediğiniz koleksiyonun numarasını girin:\n\n${collectionNames}`);
             let idx = parseInt(choice) - 1;
@@ -460,21 +521,14 @@
             }
         }
 
-        // KOLEKSİYONDAN ÖNERİ ALMA
         function getCollectionRecommendation() {
             const box = document.getElementById('recommendation-box');
             const textEl = document.getElementById('recommendation-text');
-            
             let totalItems = collections.reduce((acc, c) => acc + c.items.length, 0);
-            if (totalItems === 0) {
-                textEl.innerText = "Koleksiyonlarınızda henüz ürün bulunmuyor. Önce barkod sorgulama ekranından koleksiyonlarınıza ürün ekleyin.";
-            } else {
-                textEl.innerText = `Koleksiyonunuzdaki ${totalItems} ürün incelendi! Cilt tipinize (${selectedSkinType === 'oily' ? 'Yağlı' : 'Kuru'}) göre: Salisilik asit içeren serumları akşam rutinine, Hyaluronic Acid içeriklerini ise sabah güneş kremi altına eklemenizi öneririz.`;
-            }
+            textEl.innerText = totalItems > 0 ? `Koleksiyonunuzdaki ${totalItems} ürün analiz edildi! Cilt tipinize (${selectedSkinType === 'oily' ? 'Yağlı' : 'Kuru'}) uygun olan nemlendiricileri gündüz, asitli serumları akşam kullanmanız önerilir.` : "Henüz koleksiyonunuzda ürün yok.";
             box.classList.remove('hidden');
         }
 
-        // PROFİL & KOLEKSİYON YÖNETİMİ
         function loadProfileImage(event) {
             const reader = new FileReader();
             reader.onload = function() {
@@ -500,7 +554,6 @@
         function renderCollections() {
             const container = document.getElementById('collections-container');
             document.getElementById('stat-collections').innerText = collections.length;
-
             container.innerHTML = collections.map(c => `
                 <div class="bg-pink-50/40 p-4 rounded-2xl border border-pink-100 space-y-2">
                     <h4 class="font-bold text-sm text-pink-900 flex justify-between">
@@ -526,13 +579,12 @@
             const btn = document.getElementById('fav-toggle-btn');
             const isFav = favorites.some(f => f.barcode === currentProduct.barcode);
             btn.innerText = isFav ? "★ Favorilerden Çıkar" : "⭐ Favorilere Ekle";
-            btn.className = isFav ? "no-print px-3 py-2 rounded-xl text-xs font-bold bg-pink-100 text-pink-800 border border-pink-300" : "no-print px-3 py-2 rounded-xl text-xs font-bold bg-white text-stone-700 border border-pink-200 hover:bg-pink-50";
         }
 
         function updateDashboardBadges() {
             document.getElementById('fav-badge-count').innerText = favorites.length;
             document.getElementById('stat-favs').innerText = favorites.length;
-            document.getElementById('risk-badge-count').innerText = favorites.filter(f => calculateRiskAndMatch(f.ingredients.toLowerCase()).percent >= 50).length;
+            document.getElementById('risk-badge-count').innerText = riskProducts.length;
         }
     </script>
 </body>
